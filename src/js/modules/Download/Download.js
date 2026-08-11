@@ -27,6 +27,7 @@ export default class Download extends Module{
 
 		this.registerTableFunction("download", this.download.bind(this));
 		this.registerTableFunction("downloadToTab", this.downloadToTab.bind(this));
+		this.registerTableFunction("downloadExcelMod", this.downloadExcelMod.bind(this));
 	}
 
 	deprecatedOptionsCheck(){
@@ -39,6 +40,10 @@ export default class Download extends Module{
 
 	downloadToTab(type, filename, options, active){
 		this.download(type, filename, options, active, true);
+	}
+
+	downloadExcelMod(filename, options, range){
+		this.download("xlsxStyle", filename, options, range);
 	}
 
 	///////////////////////////////////
