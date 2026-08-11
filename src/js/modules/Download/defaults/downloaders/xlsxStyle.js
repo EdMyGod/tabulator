@@ -25,7 +25,7 @@ function rgba2hex(orig){
 	return hex;
 }
 
-function createCell(value, component, style){
+function createCell(value, component, style, horizontal){
 	var type = typeof value === "number" ? "n" : "s",
 		numFmt = typeof value === "number" ? "#,##0.0" : "",
 		cellStyle = {
@@ -38,7 +38,7 @@ function createCell(value, component, style){
 			alignment:{
 				vertical:"center",
 				wrapText:true,
-				horizontal:style.horizontal || (component && component.getDefinition().hozAlign),
+				horizontal:style.horizontal || horizontal,
 			}
 		};
 
@@ -120,9 +120,14 @@ export default function(list, options, setFileContents){
 			row.columns.forEach((col) => {
 				if(col){
 					var component = row.component.getCell(col.component.getDefinition().field);
-					item.push(createCell(col.value, component, {}));
+					item.push(createCell(
+						col.value,
+						component,
+						{},
+						col.component.getDefinition().hozAlign
+					));
 				}else{
-					item.push(createCell("", null, {}));
+					item.push(createCell("", null, {}, undefined));
 				}
 			});
 		}
