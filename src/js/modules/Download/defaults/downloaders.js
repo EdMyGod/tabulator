@@ -2,6 +2,7 @@ import csv from './downloaders/csv.js';
 import json from './downloaders/json.js';
 import pdf from './downloaders/pdf.js';
 import xlsx from './downloaders/xlsx.js';
+import xlsxStyle from './downloaders/xlsxStyle.js';
 import html from './downloaders/html.js';
 import jsonLines from './downloaders/jsonLines.js';
 
@@ -11,5 +12,6 @@ export default {
 	jsonLines:jsonLines,
 	pdf:pdf,
 	xlsx:xlsx,
+	xlsxStyle:xlsxStyle,
 	html:html,
 };
