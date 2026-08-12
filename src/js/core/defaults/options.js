@@ -13,15 +13,36 @@ export default {
 
 	columnHeaderVertAlign:"top", //vertical alignment of column headers
 
-	popupContainer:false,
+	popupContainer:true,
 
 	columns:[],//store for colum header info
-	columnDefaults:{}, //store column default props
+	columnDefaults:{
+		resizable:false,
+		minWidth:10,
+		headerWordWrap:true,
+		accessor:function(value){
+			return value === null ? "" : value;
+		},
+	}, //store column default props
+
+	headerSortElement:function(column, dir){
+		switch(dir){
+			case "asc":
+				return "<i class='fa fa-sort-up' style='color:green'>";
+			case "desc":
+				return "<i class='fa fa-sort-down' style='color:red'>";
+			default:
+				return "<i class='fa fa-sort' style='color:white'>";
+		}
+	},
+
+	movableColumns:true,
+
 	rowHeader:false,
 
 	data:false, //default starting data
 
-	autoColumns:false, //build columns from data row structure
+	autoColumns:false,
 	autoColumnsDefinitions:false,
 
 	nestedFieldSeparator:".", //separator for nested data
