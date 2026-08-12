@@ -790,6 +790,31 @@ class Tabulator extends ModuleBinder{
 		return buildMenu(this.getColumns(true));
 	}
 
+	static defaultRowHeader(options = {}){
+	    var defaults = {
+	        formatter: "rowSelection",
+	        width: 43,
+	        headerMenuIcon: "<i class='fa fa-bars'></i>",
+	        hozAlign: "center",
+	        vertAlign: "middle",
+	        headerSort: false,
+	        cellClick: function(e, cell){
+	            cell.getRow().toggleSelect();
+	        },
+	    };
+	
+	    var rowHeader = Object.assign({}, defaults, options);
+	
+	    if(options.cellClick){
+	        rowHeader.cellClick = function(e, cell){
+	            defaults.cellClick(e, cell);
+	            options.cellClick(e, cell);
+	        };
+	    }
+	
+	    return rowHeader;
+	}
+	
 	getColumn(field){
 		var column = this.columnManager.findColumn(field);
 		
