@@ -63,33 +63,41 @@
         { formatter: "rowSelection", titleFormatter: "rowSelection", hozAlign: "center",
           headerSort: false, width: 45, cellClick: function (e, cell) { cell.getRow().toggleSelect(); } },
 
-        { title: "Name", field: "name", editor: "input", validator: "required",
-          headerFilter: "input", widthGrow: 2 },
+        { title: "Person", columns: [
+            { title: "Name", field: "name", editor: "input", validator: "required",
+              headerFilter: "input", widthGrow: 2,
+              headerMenu: function () {
+                return [{
+                  label: "Столбцы",
+                  menu: table.getColumnVisibilityMenu()
+                }];
+              } },
+            { title: "DOB", field: "dob", sorter: "date", hozAlign: "center", editor: "date" },
+          ] },
 
-        { title: "Department", field: "dept", headerFilter: "list",
-          headerFilterParams: { values: ["Engineering", "Sales", "Marketing"], clearable: true },
-          editor: "list", editorParams: { values: ["Engineering", "Sales", "Marketing"] } },
+        { title: "Performance", columns: [
+            { title: "Progress", field: "progress", sorter: "number", formatter: "progress",
+              formatterParams: { min: 0, max: 100 }, editor: "number",
+              editorParams: { min: 0, max: 100 }, validator: ["min:0", "max:100"],
+              bottomCalc: "avg", bottomCalcParams: { precision: 0 } },
+            { title: "Rating", field: "rating", formatter: "star", hozAlign: "center",
+              width: 120, editor: "star" },
+          ] },
 
-        { title: "Progress", field: "progress", sorter: "number", formatter: "progress",
-          formatterParams: { min: 0, max: 100 }, editor: "number",
-          editorParams: { min: 0, max: 100 }, validator: ["min:0", "max:100"],
-          bottomCalc: "avg", bottomCalcParams: { precision: 0 } },
+        { title: "Finance", columns: [
+            { title: "Revenue", field: "revenue", sorter: "number", hozAlign: "right",
+              formatter: "money", formatterParams: { symbol: "$", precision: 0, thousand: "," },
+              editor: "number",
+              bottomCalc: "sum", bottomCalcFormatter: "money",
+              bottomCalcFormatterParams: { symbol: "$", precision: 0, thousand: "," } },
+          ] },
 
-        { title: "Rating", field: "rating", formatter: "star", hozAlign: "center",
-          width: 120, editor: "star" },
+        { title: "Status", columns: [
+            { title: "Active", field: "active", hozAlign: "center", formatter: "tickCross",
+              editor: "tickCross", headerFilter: "tickCross", headerFilterParams: { tristate: true } },
+          ] },
 
-        { title: "Revenue", field: "revenue", sorter: "number", hozAlign: "right",
-          formatter: "money", formatterParams: { symbol: "$", precision: 0, thousand: "," },
-          editor: "number",
-          bottomCalc: "sum", bottomCalcFormatter: "money",
-          bottomCalcFormatterParams: { symbol: "$", precision: 0, thousand: "," } },
-
-        { title: "Active", field: "active", hozAlign: "center", formatter: "tickCross",
-          editor: "tickCross", headerFilter: "tickCross", headerFilterParams: { tristate: true } },
-
-        { title: "DOB", field: "dob", sorter: "date", hozAlign: "center", editor: "date" },
-
-        // Per-row delete button.
+        // Per-row delete button. It has no field and must not appear in the visibility menu.
         { title: "", width: 60, hozAlign: "center", headerSort: false,
           formatter: function () { return "🗑"; },
           cellClick: function (e, cell) { cell.getRow().delete(); } },
