@@ -719,6 +719,77 @@ class Tabulator extends ModuleBinder{
 		return this.columnManager.getComponents(structured);
 	}
 	
+	getColumnVisibilityMenu(){
+		var buildMenu = (columns) => {
+			return columns.reduce((menu, column) => {
+				var definition = column.getDefinition();
+				var subColumns = column.getSubColumns();
+
+				// Группа колонок
+				if(subColumns.length){
+					var subMenu = buildMenu(subColumns);
+
+					if(subMenu.length){
+						menu.push({
+							label: definition.title || "",
+							menu: subMenu,
+						});
+					}
+
+					return menu;
+				}
+
+				// Не показываем конечные колонки без field
+				if(typeof definition.field === "undefined"){
+					return menu;
+				}
+
+				// Иконка checkbox
+				var icon = document.createElement("i");
+
+				icon.classList.add(
+					"fas",
+					column.isVisible() ? "fa-check-square" : "fa-square"
+				);
+
+				// Название
+				var label = document.createElement("span");
+
+				label.appendChild(icon);
+				label.appendChild(
+					document.createTextNode(" " + (definition.title || ""))
+				);
+
+				// Пункт меню
+				menu.push({
+					label: label,
+
+					action: (e) => {
+						e.stopPropagation();
+
+						column.toggle();
+
+						icon.classList.toggle(
+							"fa-check-square",
+							column.isVisible()
+						);
+
+						icon.classList.toggle(
+							"fa-square",
+							!column.isVisible()
+						);
+
+						this.redraw();
+					},
+				});
+
+				return menu;
+			}, []);
+		};
+
+		return buildMenu(this.getColumns(true));
+	}
+
 	getColumn(field){
 		var column = this.columnManager.findColumn(field);
 		
