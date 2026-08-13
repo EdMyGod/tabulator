@@ -1,0 +1,153 @@
+@use "sass:color";
+
+// Cubisio theme: consolidated from test/tabulator.min.css.
+// The base Tabulator stylesheet remains configurable; this theme provides
+// the project's standard visual defaults without changing core behavior.
+
+$backgroundColor: #fff;
+$borderColor: #697A9F;
+$textSize: 14px;
+
+$headerBackgroundColor: #697A9F;
+$headerTextColor: #fff;
+$headerBorderColor: #fff;
+$headerSeparatorColor: #697A9F;
+$headerMargin: 4px;
+
+$sortArrowHover: #697A9F;
+$sortArrowActive: #666;
+$sortArrowInactive: #fff;
+
+$rowBackgroundColor: #fff;
+$rowAltBackgroundColor: #f3f3f3;
+$rowBorderColor: #aaa;
+$rowTextColor: #333;
+$rowHoverBackground: #eee;
+$rowSelectedBackground: #9ABCEA;
+$rowSelectedBackgroundHover: #769BCC;
+
+$editBoxColor: #1D68CD;
+$errorColor: #dd0000;
+
+$footerBackgroundColor: #697A9F;
+$footerTextColor: #fff;
+$footerBorderColor: #aaa;
+$footerSeparatorColor: #697A9F;
+$footerActiveColor: #fff;
+
+$rangeBorderColor: #2975DD;
+$rangeHandleColor: $rangeBorderColor;
+$rangeHeaderSelectedBackground: #3876ca;
+$rangeHeaderSelectedTextColor: #fff;
+$rangeHeaderHighlightBackground: #d6d6d6;
+$rangeHeaderTextHighlightBackground: #000;
+
+@use "../tabulator.scss" with (
+	$backgroundColor: $backgroundColor,
+	$borderColor: $borderColor,
+	$textSize: $textSize,
+	$headerBackgroundColor: $headerBackgroundColor,
+	$headerTextColor: $headerTextColor,
+	$headerBorderColor: $headerBorderColor,
+	$headerSeparatorColor: $headerSeparatorColor,
+	$headerMargin: $headerMargin,
+	$sortArrowHover: $sortArrowHover,
+	$sortArrowActive: $sortArrowActive,
+	$sortArrowInactive: $sortArrowInactive,
+	$rowBackgroundColor: $rowBackgroundColor,
+	$rowAltBackgroundColor: $rowAltBackgroundColor,
+	$rowBorderColor: $rowBorderColor,
+	$rowTextColor: $rowTextColor,
+	$rowHoverBackground: $rowHoverBackground,
+	$rowSelectedBackground: $rowSelectedBackground,
+	$rowSelectedBackgroundHover: $rowSelectedBackgroundHover,
+	$editBoxColor: $editBoxColor,
+	$errorColor: $errorColor,
+	$footerBackgroundColor: $footerBackgroundColor,
+	$footerTextColor: $footerTextColor,
+	$footerBorderColor: $footerBorderColor,
+	$footerSeparatorColor: $footerSeparatorColor,
+	$footerActiveColor: $footerActiveColor,
+	$rangeBorderColor: $rangeBorderColor,
+	$rangeHandleColor: $rangeHandleColor,
+	$rangeHeaderSelectedBackground: $rangeHeaderSelectedBackground,
+	$rangeHeaderSelectedTextColor: $rangeHeaderSelectedTextColor,
+	$rangeHeaderHighlightBackground: $rangeHeaderHighlightBackground,
+	$rangeHeaderTextHighlightBackground: $rangeHeaderTextHighlightBackground
+);
+
+// Project-specific structural refinements from the tested CSS.
+.tabulator {
+	border: 1px solid $borderColor;
+	border-radius: 6px;
+
+	.tabulator-header {
+		border-bottom: 1px solid $headerSeparatorColor;
+		border-radius: 6px 6px 0 0;
+
+		.tabulator-col {
+			background: $headerBackgroundColor;
+			text-align: center;
+			border-right: 1px solid $headerBorderColor;
+
+			.tabulator-col-content {
+				padding: 4px;
+
+				.tabulator-header-popup-button {
+					color: $headerTextColor;
+				}
+			}
+		}
+
+		.tabulator-col-group .tabulator-col-group-cols {
+			border-top: 1px solid $headerBorderColor;
+		}
+
+		.tabulator-col.tabulator-sortable {
+			&[aria-sort="none"] .tabulator-col-content .tabulator-col-sorter {
+				color: $sortArrowInactive;
+
+				.tabulator-arrow {
+					border-bottom-color: $sortArrowInactive;
+				}
+			}
+
+			&[aria-sort="ascending"] .tabulator-col-content .tabulator-col-sorter .tabulator-arrow {
+				border-bottom-color: lightgreen;
+			}
+
+			&[aria-sort="descending"] .tabulator-col-content .tabulator-col-sorter .tabulator-arrow {
+				border-top-color: #FF7276;
+			}
+		}
+	}
+
+	.tabulator-footer {
+		border-top: 1px solid $footerSeparatorColor;
+		background-color: $footerBackgroundColor;
+		color: $footerTextColor;
+		border-radius: 0 0 6px 6px;
+
+		.tabulator-calcs-holder {
+			background: $footerBackgroundColor !important;
+
+			.tabulator-row {
+				background: $footerBackgroundColor !important;
+
+				.tabulator-cell {
+					border-right: 1px solid $headerBorderColor !important;
+				}
+			}
+		}
+
+		.tabulator-paginator {
+			color: #555;
+		}
+	}
+}
+
+.tabulator-row {
+	.tabulator-cell {
+		padding: 4px;
+	}
+}
