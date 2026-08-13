@@ -28,6 +28,12 @@ $rowHoverBackground: rgb(229, 239, 241);
 $rowSelectedBackground: rgb(229, 239, 241);
 $rowSelectedBackgroundHover: rgb(229, 239, 241);
 
+// Groups
+$groupBackgroundColor: color.adjust($rowBackgroundColor, $lightness: -8%);
+$groupHoverBackground: color.adjust($rowBackgroundColor, $lightness: -14%);
+$groupTextColor: #000;
+$groupToggleColor: #000;
+
 // Editing / validation
 $editBoxColor: #1d68cd;
 $errorColor: #dd0000;
@@ -154,11 +160,19 @@ $rangeHeaderTextHighlightBackground: #000;
 
 		&:hover {
 			background: $rowHoverBackground;
+
+			.tabulator-row-header {
+				background: $rowHoverBackground;
+			}
 		}
 
 		&.tabulator-selected,
 		&.tabulator-selected:hover {
 			background: $rowSelectedBackground;
+
+			.tabulator-row-header {
+				background: $rowSelectedBackground;
+			}
 		}
 
 		.tabulator-row-header {
@@ -174,17 +188,22 @@ $rangeHeaderTextHighlightBackground: #000;
 	}
 
 	.tabulator-group {
-		color: #000;
-		background: color.adjust($headerBackgroundColor, $lightness: -15%);
+		color: $groupTextColor;
+		background: $groupBackgroundColor;
 		border-bottom: 1px solid $borderColor;
 		transition: background-color .12s ease;
 
 		&:hover {
-			background: color.adjust($headerBackgroundColor, $lightness: -22%);
+			background: $groupHoverBackground;
 		}
 
 		* {
-			color: #000;
+			color: $groupTextColor;
+		}
+
+		.tabulator-group-toggle .tabulator-arrow {
+			border-top-color: $groupToggleColor;
+			border-bottom-color: $groupToggleColor;
 		}
 	}
 
