@@ -5,7 +5,7 @@
 // Keep the standard Tabulator structure in tabulator.scss and override only
 // the visual defaults that belong to the Cubisio theme.
 
-$backgroundColor: #fff;
+$backgroundColor: #eae5e2;
 $borderColor: #697A9F;
 $textSize: 14px;
 
@@ -22,11 +22,11 @@ $sortArrowActive: #666;
 $sortArrowInactive: #fff;
 
 // Rows
-$rowBackgroundColor: #fff;
-$rowAltBackgroundColor: #efefef;
+$rowBackgroundColor: #eae5e2;
+$rowAltBackgroundColor: #eae5e2;
 $rowBorderColor: #aaa;
-$rowTextColor: #333;
-$rowHoverBackground: #bbb;
+$rowTextColor: #000;
+$rowHoverBackground: color.adjust(#eae5e2, $lightness: -5%);
 $rowSelectedBackground: #9abcea;
 $rowSelectedBackgroundHover: #769bcc;
 
@@ -118,8 +118,7 @@ $rangeHeaderTextHighlightBackground: #000;
 			}
 		}
 
-		// A subtle darkening on header hover makes the interactive area obvious
-		// without changing the established Cubisio palette.
+		// A subtle darkening on header hover makes the interactive area obvious.
 		@media (hover: hover) and (pointer: fine) {
 			.tabulator-col.tabulator-sortable.tabulator-col-sorter-element:hover {
 				background-color: color.adjust($headerBackgroundColor, $lightness: -10%);
@@ -143,12 +142,6 @@ $rangeHeaderTextHighlightBackground: #000;
 					border-top: none;
 					border-bottom: 6px solid lightgreen;
 				}
-
-				@media (hover: hover) and (pointer: fine) {
-					&.tabulator-col-sorter-element .tabulator-arrow:hover {
-						border-bottom-color: $sortArrowHover;
-					}
-				}
 			}
 
 			&[aria-sort="descending"] .tabulator-col-content .tabulator-col-sorter {
@@ -156,14 +149,37 @@ $rangeHeaderTextHighlightBackground: #000;
 					border-bottom: none;
 					border-top: 6px solid #ff7276;
 				}
-
-				@media (hover: hover) and (pointer: fine) {
-					&.tabulator-col-sorter-element .tabulator-arrow:hover {
-						border-top-color: $sortArrowHover;
-					}
-				}
 			}
 		}
+	}
+
+	.tabulator-row {
+		background: $rowBackgroundColor;
+		color: $rowTextColor;
+
+		&.tabulator-row-even,
+		&.tabulator-row-odd {
+			background: $rowBackgroundColor;
+		}
+
+		// Keep rowHeader visually continuous with the data row.
+		.tabulator-row-header {
+			background: $rowBackgroundColor;
+			color: $rowTextColor;
+		}
+
+		.tabulator-row-header:hover {
+			background: $rowBackgroundColor;
+		}
+
+		.tabulator-cell {
+			padding: 4px;
+		}
+	}
+
+	// Group rows intentionally use black text rather than header text colors.
+	.tabulator-group {
+		color: #000;
 	}
 
 	.tabulator-footer {
@@ -187,12 +203,5 @@ $rangeHeaderTextHighlightBackground: #000;
 		.tabulator-paginator {
 			color: #555;
 		}
-	}
-}
-
-// Match the tested compact row spacing.
-.tabulator-row {
-	.tabulator-cell {
-		padding: 4px;
 	}
 }
