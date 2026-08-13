@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="../dist/css/tabulator_bootstrap5.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <script src="../dist/js/tabulator.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style/dist/xlsx.bundle.js"></script>
 </head>
 <body>
   <main class="container py-4">
@@ -15,9 +16,8 @@
     <p>
       A kitchen-sink table that exercises many modules at once: inline editing &amp;
       validation, formatters, header filters, grouping, top/bottom calculations, row
-      selection, add/delete rows, dependency-free downloads (CSV/JSON/HTML) and layout
-      persistence (sorts, filters and column order survive a reload via
-      <code>localStorage</code>).
+      selection, add/delete rows, dependency-free downloads (CSV/JSON/HTML), styled
+      XLSX export and layout persistence.
       <a href="index.html">← back to index</a>
     </p>
 
@@ -27,14 +27,25 @@
       <button id="dl-csv" class="btn btn-dark">Download CSV</button>
       <button id="dl-json" class="btn btn-dark">Download JSON</button>
       <button id="dl-html" class="btn btn-dark">Download HTML</button>
+      <button id="dl-xlsx-style" class="btn btn-success">Download Excel (styled)</button>
       <button id="reset" class="btn btn-outline-secondary">Reset saved layout</button>
     </div>
 
     <div id="example-table"></div>
-    <p><small>Tip: sort/filter/reorder columns, then reload the page — your layout is remembered.</small></p>
+    <p><small>Tip: sort/filter/reorder columns, select rows, then reload the page — your layout is remembered.</small></p>
   </main>
 
   <script>
+    // Register xlsx-js-style for the modified XLSX downloader.
+    // Tabulator's downloader resolves the library through the dependency registry.
+    Tabulator.registerModule("Download");
+    var xlsxDependency = window.XLSX;
+
+    if (xlsxDependency && Tabulator.prototype.modules && Tabulator.prototype.modules.download) {
+      // The built Tabulator exposes the dependency registry through the table instance.
+      // Registration is completed after table creation below.
+    }
+
     var tabledata = [
       { id: 1, name: "Oli Bob",    dept: "Engineering", progress: 12, rating: 1, revenue: 12000, active: true,  dob: "2005-08-14" },
       { id: 2, name: "Mary May",   dept: "Sales",       progress: 90, rating: 4, revenue: 48000, active: false, dob: "1989-02-01" },
@@ -57,65 +68,54 @@
       data: tabledata,
       layout: "fitColumns",
       index: "id",
-
       persistence: true,
       persistenceID: "tabulator-examples-full-demo",
-
       selectableRows: true,
       recalcOnRowSelection: true,
-
       groupBy: "dept",
       groupStartOpen: true,
       columnCalcs: "both",
-
       rowHeader: Tabulator.defaultRowHeader({
         headerMenu: headerMenu,
         cellClick: function(e, cell) {
           console.log("Additional rowHeader handler:", cell.getRow().getData());
         },
       }),
-
       columns: [
         { title: "Person", columns: [
-            { title: "Name", field: "name", editor: "input", validator: "required",
-              headerFilter: "input", widthGrow: 2 },
+            { title: "Name", field: "name", editor: "input", validator: "required", headerFilter: "input", widthGrow: 2 },
             { title: "DOB", field: "dob", sorter: "date", hozAlign: "center", editor: "date" },
           ] },
-
         { title: "Performance", columns: [
             { title: "Progress", field: "progress", sorter: "number", formatter: "progress",
-              formatterParams: { min: 0, max: 100 }, editor: "number",
-              editorParams: { min: 0, max: 100 }, validator: ["min:0", "max:100"],
-              bottomCalc: "avg", bottomCalcParams: { precision: 0 } },
-            { title: "Rating", field: "rating", formatter: "star", hozAlign: "center",
-              width: 120, editor: "star" },
+              formatterParams: { min: 0, max: 100 }, editor: "number", editorParams: { min: 0, max: 100 },
+              validator: ["min:0", "max:100"], bottomCalc: "avg", bottomCalcParams: { precision: 0 } },
+            { title: "Rating", field: "rating", formatter: "star", hozAlign: "center", width: 120, editor: "star" },
           ] },
-
         { title: "Finance", columns: [
             { title: "Revenue", field: "revenue", sorter: "number", hozAlign: "right",
-              formatter: "money", formatterParams: { symbol: "$", precision: 0, thousand: "," },
-              editor: "number",
-              bottomCalc: "selectedSum",
-              bottomCalcFormatter: "money",
+              formatter: "money", formatterParams: { symbol: "$", precision: 0, thousand: "," }, editor: "number",
+              bottomCalc: "selectedSum", bottomCalcFormatter: "money",
               bottomCalcFormatterParams: { symbol: "$", precision: 0, thousand: "," } },
           ] },
-
         { title: "Status", columns: [
-            { title: "Active", field: "active", hozAlign: "center", formatter: "tickCross",
-              editor: "tickCross", headerFilter: "tickCross", headerFilterParams: { tristate: true } },
-            { title: "Starts with", field: "name", headerFilter: "input",
-              headerFilterFunc: Tabulator.headerFilterStartsWith },
+            { title: "Active", field: "active", hozAlign: "center", formatter: "tickCross", editor: "tickCross",
+              headerFilter: "tickCross", headerFilterParams: { tristate: true } },
+            { title: "Starts with", field: "name", headerFilter: "input", headerFilterFunc: Tabulator.headerFilterStartsWith },
           ] },
-
         { title: "", width: 60, hozAlign: "center", headerSort: false,
-          formatter: function () { return "🗑"; },
-          cellClick: function (e, cell) { cell.getRow().delete(); } },
+          formatter: function () { return "🗑"; }, cellClick: function (e, cell) { cell.getRow().delete(); } },
       ],
     });
 
+    // Make xlsx-js-style available to the modified downloader.
+    if (window.XLSX && table.modules && table.modules.download && table.modules.download.dependencyRegistry) {
+      table.modules.download.dependencyRegistry.register("XLSX", window.XLSX);
+    }
+
     document.getElementById("add-row").addEventListener("click", function () {
-      table.addRow({ id: nextId++, name: "New Person", dept: "Engineering",
-        progress: 0, rating: 0, revenue: 0, active: true, dob: "2000-01-01" }, true);
+      table.addRow({ id: nextId++, name: "New Person", dept: "Engineering", progress: 0, rating: 0,
+        revenue: 0, active: true, dob: "2000-01-01" }, true);
     });
 
     document.getElementById("clear-selected").addEventListener("click", function () {
@@ -130,6 +130,9 @@
     });
     document.getElementById("dl-html").addEventListener("click", function () {
       table.download("html", "tabulator-data.html", { style: true });
+    });
+    document.getElementById("dl-xlsx-style").addEventListener("click", function () {
+      table.download("xlsxStyle", "Юрлица.xlsx", { sheetName: "Таблица" });
     });
 
     document.getElementById("reset").addEventListener("click", function () {
