@@ -506,9 +506,20 @@ export default class ColumnCalcs extends Module{
 				});
 				
 				paramKey = type + "Params";
-				params = typeof column.modules.columnCalcs[paramKey] === "function" ? column.modules.columnCalcs[paramKey](values, data) : column.modules.columnCalcs[paramKey];
 				
-				column.setFieldValue(rowData, column.modules.columnCalcs[type](values, data, params));
+				params = typeof column.modules.columnCalcs[paramKey] === "function"
+				    ? column.modules.columnCalcs[paramKey](values, data)
+				    : column.modules.columnCalcs[paramKey];
+				
+				params = Object.assign({}, params, {
+				    table: this.table,
+				    field: column.getField(),
+				});
+				
+				column.setFieldValue(
+				    rowData,
+				    column.modules.columnCalcs[type](values, data, params)
+				);
 			}
 		});
 		
