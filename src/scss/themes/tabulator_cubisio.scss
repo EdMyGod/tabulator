@@ -29,10 +29,15 @@ $rowSelectedBackground: rgb(229, 239, 241);
 $rowSelectedBackgroundHover: rgb(229, 239, 241);
 
 // Groups
-$groupBackgroundColor: color.adjust($rowBackgroundColor, $lightness: -8%);
-$groupHoverBackground: color.adjust($rowBackgroundColor, $lightness: -14%);
+$groupBackgroundColor: color.adjust($rowBackgroundColor, $lightness: -12%);
+$groupHoverBackground: color.adjust($rowBackgroundColor, $lightness: -20%);
 $groupTextColor: #000;
 $groupToggleColor: #000;
+
+// Pagination
+$paginationActiveBackground: rgba(255, 255, 255, .28);
+$paginationActiveTextColor: #fff;
+$paginationActiveBorderColor: rgba(255, 255, 255, .65);
 
 // Editing / validation
 $editBoxColor: #1d68cd;
@@ -43,7 +48,7 @@ $footerBackgroundColor: #697A9F;
 $footerTextColor: #fff;
 $footerBorderColor: #aaa;
 $footerSeparatorColor: #fff;
-$footerActiveColor: #d00;
+$footerActiveColor: #fff;
 
 // Range selection
 $rangeBorderColor: #2975dd;
@@ -188,22 +193,29 @@ $rangeHeaderTextHighlightBackground: #000;
 	}
 
 	.tabulator-group {
-		color: $groupTextColor;
-		background: $groupBackgroundColor;
+		color: $groupTextColor !important;
+		background: $groupBackgroundColor !important;
 		border-bottom: 1px solid $borderColor;
 		transition: background-color .12s ease;
 
 		&:hover {
-			background: $groupHoverBackground;
+			background: $groupHoverBackground !important;
 		}
 
 		* {
-			color: $groupTextColor;
+			color: $groupTextColor !important;
 		}
 
-		.tabulator-group-toggle .tabulator-arrow {
-			border-top-color: $groupToggleColor;
-			border-bottom-color: $groupToggleColor;
+		.tabulator-group-toggle {
+			background: transparent !important;
+
+			.tabulator-arrow {
+				background: transparent !important;
+				border-left-color: transparent !important;
+				border-right-color: transparent !important;
+				border-top-color: $groupToggleColor !important;
+				border-bottom-color: $groupToggleColor !important;
+			}
 		}
 	}
 
@@ -231,6 +243,12 @@ $rangeHeaderTextHighlightBackground: #000;
 
 		.tabulator-paginator {
 			color: $footerTextColor;
+		}
+
+		.tabulator-page.active {
+			background: $paginationActiveBackground;
+			color: $paginationActiveTextColor;
+			border-color: $paginationActiveBorderColor;
 		}
 	}
 }
