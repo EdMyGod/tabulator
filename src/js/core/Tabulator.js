@@ -815,6 +815,28 @@ class Tabulator extends ModuleBinder{
 	    return rowHeader;
 	}
 	
+	static selectedSum(values, data, calcParams){
+	    var selectedData = calcParams.table.getSelectedData();
+	
+	    if(selectedData.length){
+	        values = selectedData.map((row) => row[calcParams.field]);
+	    }
+	
+	    var calc = values.reduce((sum, value) => {
+	        return sum + (typeof value === "number" ? value : 0);
+	    }, 0);
+	
+	    return calc ? calc : "";
+	}
+	
+	static headerFilterStartsWith(headerValue, rowValue){
+	    if(!headerValue){
+	        return true;
+	    }
+	
+	    return new RegExp("^" + headerValue).test(rowValue);
+	}
+	
 	getColumn(field){
 		var column = this.columnManager.findColumn(field);
 		
