@@ -8,6 +8,24 @@ export default class ModuleBinder extends TableRegistry {
 	static modulesRegistered = false;
 	
 	static defaultModules = false;
+
+	static objectArraysToObjects(objectArrays){
+		var keys = Object.keys(objectArrays);
+
+		if(!keys.length){
+			return [];
+		}
+
+		return objectArrays[keys[0]].map((_el, i) => {
+			var row = {};
+
+			keys.forEach(key => {
+				row[key] = objectArrays[key][i];
+			});
+
+			return row;
+		});
+	}
 	
 	constructor(){
 		super();
