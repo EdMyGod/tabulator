@@ -113,6 +113,18 @@ export default class ColumnCalcs extends Module{
 	userRecalc(){
 		this.recalc(this.table.rowManager.activeRows);
 	}
+
+	recalcOnSelection(){
+	    this.recalcActiveRows();
+	
+	    if(this.table.options.groupBy && this.table.options.columnCalcs !== "table"){
+	        var groups = this.table.modules.groupRows.getChildGroups();
+	
+	        groups.forEach((group) => {
+	            this.recalcGroup(group);
+	        });
+	    }
+	}
 	
 	///////////////////////////////////
 	///////// Internal Logic //////////
