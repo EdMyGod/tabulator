@@ -1,41 +1,48 @@
 @use "sass:color";
 
-// Cubisio theme: consolidated from test/tabulator.min.css.
-// The base Tabulator stylesheet remains configurable; this theme provides
-// the project's standard visual defaults without changing core behavior.
+// Cubisio theme
+// Based on the complete tested tabulator.min.css from the project.
+// Keep the standard Tabulator structure in tabulator.scss and override only
+// the visual defaults that belong to the Cubisio theme.
 
 $backgroundColor: #fff;
 $borderColor: #697A9F;
 $textSize: 14px;
 
+// Header
 $headerBackgroundColor: #697A9F;
 $headerTextColor: #fff;
 $headerBorderColor: #fff;
 $headerSeparatorColor: #697A9F;
 $headerMargin: 4px;
 
-$sortArrowHover: #697A9F;
+// Sort icons: inactive is white; active states retain the tested colors.
+$sortArrowHover: color.adjust($headerBackgroundColor, $lightness: -12%);
 $sortArrowActive: #666;
 $sortArrowInactive: #fff;
 
+// Rows
 $rowBackgroundColor: #fff;
-$rowAltBackgroundColor: #f3f3f3;
+$rowAltBackgroundColor: #efefef;
 $rowBorderColor: #aaa;
 $rowTextColor: #333;
-$rowHoverBackground: #eee;
-$rowSelectedBackground: #9ABCEA;
-$rowSelectedBackgroundHover: #769BCC;
+$rowHoverBackground: #bbb;
+$rowSelectedBackground: #9abcea;
+$rowSelectedBackgroundHover: #769bcc;
 
-$editBoxColor: #1D68CD;
+// Editing / validation
+$editBoxColor: #1d68cd;
 $errorColor: #dd0000;
 
+// Footer
 $footerBackgroundColor: #697A9F;
 $footerTextColor: #fff;
 $footerBorderColor: #aaa;
 $footerSeparatorColor: #697A9F;
-$footerActiveColor: #fff;
+$footerActiveColor: #d00;
 
-$rangeBorderColor: #2975DD;
+// Range selection
+$rangeBorderColor: #2975dd;
 $rangeHandleColor: $rangeBorderColor;
 $rangeHeaderSelectedBackground: #3876ca;
 $rangeHeaderSelectedTextColor: #fff;
@@ -76,7 +83,7 @@ $rangeHeaderTextHighlightBackground: #000;
 	$rangeHeaderTextHighlightBackground: $rangeHeaderTextHighlightBackground
 );
 
-// Project-specific structural refinements from the tested CSS.
+// Cubisio-specific refinements.
 .tabulator {
 	border: 1px solid $borderColor;
 	border-radius: 6px;
@@ -87,37 +94,74 @@ $rangeHeaderTextHighlightBackground: #000;
 
 		.tabulator-col {
 			background: $headerBackgroundColor;
-			text-align: center;
 			border-right: 1px solid $headerBorderColor;
+			text-align: center;
+			transition: background-color .12s ease;
 
 			.tabulator-col-content {
 				padding: 4px;
 
+				// The menu icon is intentionally white in the Cubisio theme.
 				.tabulator-header-popup-button {
 					color: $headerTextColor;
+
+					&:hover {
+						color: $headerTextColor;
+						opacity: .6;
+					}
 				}
+			}
+
+			// Keep the separator between levels of multi-level headers white.
+			&.tabulator-col-group .tabulator-col-group-cols {
+				border-top: 1px solid $headerBorderColor;
 			}
 		}
 
-		.tabulator-col-group .tabulator-col-group-cols {
-			border-top: 1px solid $headerBorderColor;
+		// A subtle darkening on header hover makes the interactive area obvious
+		// without changing the established Cubisio palette.
+		@media (hover: hover) and (pointer: fine) {
+			.tabulator-col.tabulator-sortable.tabulator-col-sorter-element:hover {
+				background-color: color.adjust($headerBackgroundColor, $lightness: -10%);
+			}
 		}
 
 		.tabulator-col.tabulator-sortable {
+			// Inactive sort arrow is white, matching the header/menu icon.
 			&[aria-sort="none"] .tabulator-col-content .tabulator-col-sorter {
 				color: $sortArrowInactive;
 
 				.tabulator-arrow {
-					border-bottom-color: $sortArrowInactive;
+					border-top: none;
+					border-bottom: 6px solid $sortArrowInactive;
 				}
 			}
 
-			&[aria-sort="ascending"] .tabulator-col-content .tabulator-col-sorter .tabulator-arrow {
-				border-bottom-color: lightgreen;
+			// Keep the tested active sort colors.
+			&[aria-sort="ascending"] .tabulator-col-content .tabulator-col-sorter {
+				.tabulator-arrow {
+					border-top: none;
+					border-bottom: 6px solid lightgreen;
+				}
+
+				@media (hover: hover) and (pointer: fine) {
+					&.tabulator-col-sorter-element .tabulator-arrow:hover {
+						border-bottom-color: $sortArrowHover;
+					}
+				}
 			}
 
-			&[aria-sort="descending"] .tabulator-col-content .tabulator-col-sorter .tabulator-arrow {
-				border-top-color: #FF7276;
+			&[aria-sort="descending"] .tabulator-col-content .tabulator-col-sorter {
+				.tabulator-arrow {
+					border-bottom: none;
+					border-top: 6px solid #ff7276;
+				}
+
+				@media (hover: hover) and (pointer: fine) {
+					&.tabulator-col-sorter-element .tabulator-arrow:hover {
+						border-top-color: $sortArrowHover;
+					}
+				}
 			}
 		}
 	}
@@ -146,6 +190,7 @@ $rangeHeaderTextHighlightBackground: #000;
 	}
 }
 
+// Match the tested compact row spacing.
 .tabulator-row {
 	.tabulator-cell {
 		padding: 4px;
