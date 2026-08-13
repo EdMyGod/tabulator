@@ -90,4 +90,25 @@ export default {
 
 		return unique.length;
 	},
+	"selectedSum":function(values, data, calcParams){
+	    var selectedData = calcParams.table.getSelectedData();
+	
+	    if(selectedData.length){
+	        values = selectedData.map(function(row){
+	            return row[calcParams.field];
+	        });
+	    }
+	
+	    var output = 0;
+	
+	    values.forEach(function(value){
+	        value = Number(value);
+	
+	        if(!isNaN(value)){
+	            output += value;
+	        }
+	    });
+	
+	    return output ? output : "";
+	},
 };
