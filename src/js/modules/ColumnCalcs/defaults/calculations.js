@@ -94,9 +94,19 @@ export default {
 	    var selectedData = calcParams.table.getSelectedData();
 	
 	    if(selectedData.length){
-	        values = selectedData.map(function(row){
-	            return row[calcParams.field];
+	        var dataSet = new Set(data);
+	
+	        selectedData = selectedData.filter(function(row){
+	            return dataSet.has(row);
 	        });
+	
+	        if(selectedData.length){
+	            values = selectedData.map(function(row){
+	                return row[calcParams.field];
+	            });
+	        }else{
+	            values = [];
+	        }
 	    }
 	
 	    var output = 0;
