@@ -497,7 +497,7 @@ export default class ColumnCalcs extends Module{
 		type = pos == "top" ? "topCalc" : "botCalc",
 		params, paramKey;
 		
-		calcs.forEach(function(column){
+		calcs.forEach((column) => {
 			var values = [];
 			
 			if(column.modules.columnCalcs && column.modules.columnCalcs[type]){
