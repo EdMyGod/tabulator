@@ -17,7 +17,7 @@
       A kitchen-sink table that exercises many modules at once: inline editing &amp;
       validation, formatters, header filters, grouping, top/bottom calculations, row
       selection, add/delete rows, dependency-free downloads (CSV/JSON/HTML), styled
-      XLSX export and layout persistence.
+      XLSX export, cubisioData conversion and layout persistence.
       <a href="index.html">← back to index</a>
     </p>
 
@@ -36,24 +36,16 @@
   </main>
 
   <script>
-    // Register xlsx-js-style for the modified XLSX downloader.
-    // Tabulator's downloader resolves the library through the dependency registry.
-    Tabulator.registerModule("Download");
-    var xlsxDependency = window.XLSX;
-
-    if (xlsxDependency && Tabulator.prototype.modules && Tabulator.prototype.modules.download) {
-      // The built Tabulator exposes the dependency registry through the table instance.
-      // Registration is completed after table creation below.
-    }
-
-    var tabledata = [
-      { id: 1, name: "Oli Bob",    dept: "Engineering", progress: 12, rating: 1, revenue: 12000, active: true,  dob: "2005-08-14" },
-      { id: 2, name: "Mary May",   dept: "Sales",       progress: 90, rating: 4, revenue: 48000, active: false, dob: "1989-02-01" },
-      { id: 3, name: "Chris L.",   dept: "Engineering", progress: 42, rating: 0, revenue: 9000,  active: true,  dob: "1980-11-23" },
-      { id: 4, name: "Brendon P.", dept: "Marketing",   progress: 100,rating: 1, revenue: 21000, active: true,  dob: "1992-04-18" },
-      { id: 5, name: "Margret M.", dept: "Sales",       progress: 16, rating: 5, revenue: 33500, active: false, dob: "1998-06-30" },
-      { id: 6, name: "Van Ng",     dept: "Engineering", progress: 70, rating: 3, revenue: 27000, active: true,  dob: "1975-09-12" },
-    ];
+    var tabledata = Tabulator.cubisioData({
+      id: [1, 2, 3, 4, 5, 6],
+      name: ["Oli Bob", "Mary May", "Chris L.", "Brendon P.", "Margret M.", "Van Ng"],
+      dept: ["Engineering", "Sales", "Engineering", "Marketing", "Sales", "Engineering"],
+      progress: [12, 90, 42, 100, 16, 70],
+      rating: [1, 4, 0, 1, 5, 3],
+      revenue: [12000, 48000, 9000, 21000, 33500, 27000],
+      active: [true, false, true, true, false, true],
+      dob: ["2005-08-14", "1989-02-01", "1980-11-23", "1992-04-18", "1998-06-30", "1975-09-12"]
+    });
 
     var nextId = tabledata.length + 1;
 
@@ -108,7 +100,6 @@
       ],
     });
 
-    // Make xlsx-js-style available to the modified downloader.
     if (window.XLSX && table.modules && table.modules.download && table.modules.download.dependencyRegistry) {
       table.modules.download.dependencyRegistry.register("XLSX", window.XLSX);
     }
