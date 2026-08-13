@@ -62,6 +62,10 @@
       persistenceID: "tabulator-examples-full-demo",
 
       selectableRows: true,
+
+      // Automatically recalculate column calculations when row selection changes.
+      recalcOnRowSelection: true,
+
       groupBy: "dept",
       groupStartOpen: true,
 
@@ -93,13 +97,16 @@
             { title: "Revenue", field: "revenue", sorter: "number", hozAlign: "right",
               formatter: "money", formatterParams: { symbol: "$", precision: 0, thousand: "," },
               editor: "number",
-              bottomCalc: "sum", bottomCalcFormatter: "money",
+              bottomCalc: "selectedSum",
+              bottomCalcFormatter: "money",
               bottomCalcFormatterParams: { symbol: "$", precision: 0, thousand: "," } },
           ] },
 
         { title: "Status", columns: [
             { title: "Active", field: "active", hozAlign: "center", formatter: "tickCross",
               editor: "tickCross", headerFilter: "tickCross", headerFilterParams: { tristate: true } },
+            { title: "Starts with", field: "name", headerFilter: "input",
+              headerFilterFunc: Tabulator.headerFilterStartsWith },
           ] },
 
         // Per-row delete button. It has no field and must not appear in the visibility menu.
