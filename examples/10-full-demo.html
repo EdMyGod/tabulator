@@ -62,14 +62,12 @@
       persistenceID: "tabulator-examples-full-demo",
 
       selectableRows: true,
-
-      // Automatically recalculate column calculations when row selection changes.
       recalcOnRowSelection: true,
 
       groupBy: "dept",
       groupStartOpen: true,
+      columnCalcs: "both",
 
-      // Test the custom row-header preset.
       rowHeader: Tabulator.defaultRowHeader({
         headerMenu: headerMenu,
         cellClick: function(e, cell) {
@@ -109,7 +107,6 @@
               headerFilterFunc: Tabulator.headerFilterStartsWith },
           ] },
 
-        // Per-row delete button. It has no field and must not appear in the visibility menu.
         { title: "", width: 60, hozAlign: "center", headerSort: false,
           formatter: function () { return "🗑"; },
           cellClick: function (e, cell) { cell.getRow().delete(); } },
