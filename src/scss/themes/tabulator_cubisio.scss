@@ -16,6 +16,8 @@ $headerMargin: 4px;
 $sortArrowHover: color.adjust($headerBackgroundColor, $lightness: -12%);
 $sortArrowActive: #fff;
 $sortArrowInactive: #fff;
+$sortArrowAscending: #b7ffb7;
+$sortArrowDescending: #ff7276;
 
 // Rows
 $rowBackgroundColor: #eae5e2;
@@ -131,12 +133,12 @@ $rangeHeaderTextHighlightBackground: #000;
 
 			&[aria-sort="ascending"] .tabulator-arrow {
 				border-top: none;
-				border-bottom: 6px solid lightgreen;
+				border-bottom: 6px solid $sortArrowAscending;
 			}
 
 			&[aria-sort="descending"] .tabulator-arrow {
 				border-bottom: none;
-				border-top: 6px solid #ff7276;
+				border-top: 6px solid $sortArrowDescending;
 			}
 		}
 	}
