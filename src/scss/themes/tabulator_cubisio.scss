@@ -167,16 +167,22 @@ $rangeHeaderTextHighlightBackground: #000;
 		.tabulator-cell {
 			padding: 4px;
 			border-right: 1px solid $rowBorderColor;
+			border-bottom: 1px solid $rowBorderColor;
 		}
 	}
 
 	.tabulator-group {
 		color: #000;
 		background: color.adjust($headerBackgroundColor, $lightness: -15%);
+		border-bottom: 1px solid $borderColor;
 		transition: background-color .12s ease;
 
 		&:hover {
 			background: color.adjust($headerBackgroundColor, $lightness: -22%);
+		}
+
+		* {
+			color: #000;
 		}
 	}
 
@@ -196,6 +202,7 @@ $rangeHeaderTextHighlightBackground: #000;
 
 				.tabulator-cell {
 					border-right: 1px solid $headerBorderColor !important;
+					border-bottom: 1px solid $headerBorderColor !important;
 					color: $footerTextColor !important;
 				}
 			}
