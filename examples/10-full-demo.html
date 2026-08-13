@@ -15,8 +15,8 @@
     <h1>10 · Full Demo (release smoke-test)</h1>
     <p>
       A kitchen-sink table that exercises many modules at once: inline editing &amp;
-      validation, formatters, header filters, grouping, top/bottom calculations, row
-      selection, add/delete rows, dependency-free downloads (CSV/JSON/HTML), styled
+      validation, formatters, header filters, grouping, pagination, top/bottom calculations,
+      row selection, add/delete rows, dependency-free downloads (CSV/JSON/HTML), styled
       XLSX export, cubisioData conversion and the built-in Cubisio visual theme.
       <a href="index.html">← back to index</a>
     </p>
@@ -32,19 +32,19 @@
     </div>
 
     <div id="example-table"></div>
-    <p><small>Tip: sort/filter/reorder columns, select rows, then reload the page — your layout is remembered.</small></p>
+    <p><small>Tip: sort/filter/reorder columns, select rows, use the paginator, then reload the page — your layout is remembered.</small></p>
   </main>
 
   <script>
     var tabledata = Tabulator.cubisioData({
-      id: [1, 2, 3, 4, 5, 6],
-      name: ["Oli Bob", "Mary May", "Chris L.", "Brendon P.", "Margret M.", "Van Ng"],
-      dept: ["Engineering", "Sales", "Engineering", "Marketing", "Sales", "Engineering"],
-      progress: [12, 90, 42, 100, 16, 70],
-      rating: [1, 4, 0, 1, 5, 3],
-      revenue: [12000, 48000, 9000, 21000, 33500, 27000],
-      active: [true, false, true, true, false, true],
-      dob: ["2005-08-14", "1989-02-01", "1980-11-23", "1992-04-18", "1998-06-30", "1975-09-12"]
+      id: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      name: ["Oli Bob", "Mary May", "Chris L.", "Brendon P.", "Margret M.", "Van Ng", "John K.", "Anna S.", "Peter R.", "Kate D."],
+      dept: ["Engineering", "Sales", "Engineering", "Marketing", "Sales", "Engineering", "Marketing", "Sales", "Engineering", "Marketing"],
+      progress: [12, 90, 42, 100, 16, 70, 55, 83, 31, 64],
+      rating: [1, 4, 0, 1, 5, 3, 4, 2, 5, 3],
+      revenue: [12000, 48000, 9000, 21000, 33500, 27000, 18000, 42000, 15000, 29000],
+      active: [true, false, true, true, false, true, true, false, true, true],
+      dob: ["2005-08-14", "1989-02-01", "1980-11-23", "1992-04-18", "1998-06-30", "1975-09-12", "1990-03-21", "1987-07-09", "1995-12-03", "1983-05-17"]
     });
 
     var nextId = tabledata.length + 1;
@@ -67,6 +67,10 @@
       groupBy: "dept",
       groupStartOpen: true,
       columnCalcs: "both",
+      pagination: true,
+      paginationSize: 4,
+      paginationSizeSelector: [4, 6, 10],
+      paginationCounter: "rows",
       rowHeader: Tabulator.defaultRowHeader({
         headerMenu: headerMenu,
         cellClick: function(e, cell) {
