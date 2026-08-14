@@ -205,44 +205,45 @@ $rangeHeaderTextHighlightBackground: #000;
 		* {
 			color: $groupTextColor !important;
 		}
-
 	}
 
 	.tabulator-row.tabulator-group:not(.tabulator-group-visible) .tabulator-arrow {
-		border-left-color: $groupToggleColor
-	}
-	
-	.tabulator-row.tabulator-group.tabulator-group-visible .tabulator-arrow {
-		border-top-color: $groupToggleColor
+		border-left-color: $groupToggleColor;
 	}
 
+	.tabulator-row.tabulator-group.tabulator-group-visible .tabulator-arrow {
+		border-top-color: $groupToggleColor;
+	}
+
+	// Compact minmax header filter
 	.tabulator-header-filter-minmax {
 		position: relative;
 		width: 100%;
+		min-width: 0;
 	}
 
 	.tabulator-header-filter-minmax-trigger {
+		display: block;
 		width: 100%;
-		min-width: 0;
-		padding: 3px 6px;
-		border: 1px solid $borderColor;
-		border-radius: 3px;
-		background: #fff;
-		color: #000;
+		min-height: 28px;
+		padding: 3px 22px 3px 7px;
+		overflow: hidden;
+		text-align: left;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 		font: inherit;
 		font-size: 12px;
-		line-height: 1.4;
-		text-align: left;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
+		line-height: 20px;
+		color: $rowTextColor;
+		background: $rowBackgroundColor;
+		border: 1px solid $borderColor;
+		border-radius: 3px;
 		cursor: pointer;
+	}
 
-		&:hover,
-		&:focus {
-			background: color.adjust(#fff, $lightness: -5%);
-			outline: none;
-		}
+	.tabulator-header-filter-minmax-trigger:hover,
+	.tabulator-header-filter-minmax-trigger[aria-expanded="true"] {
+		background: $rowHoverBackground;
 	}
 
 	.tabulator-header-filter-minmax-popup {
@@ -250,51 +251,67 @@ $rangeHeaderTextHighlightBackground: #000;
 		top: calc(100% + 4px);
 		left: 0;
 		z-index: 1000;
-		width: 190px;
+		display: flex;
+		width: 210px;
+		box-sizing: border-box;
 		padding: 8px;
+		flex-direction: column;
+		gap: 6px;
+		background: $rowBackgroundColor;
 		border: 1px solid $borderColor;
 		border-radius: 4px;
-		background: #fff;
-		box-shadow: 0 3px 10px rgba(0, 0, 0, .18);
-		color: #000;
+		box-shadow: 0 3px 10px rgba(0, 0, 0, .2);
+		text-align: left;
+	}
+
+	.tabulator-header-filter-minmax-popup[hidden] {
+		display: none;
 	}
 
 	.tabulator-header-filter-minmax-mode,
 	.tabulator-header-filter-minmax-date {
-		display: block;
 		width: 100%;
+		min-height: 30px;
 		box-sizing: border-box;
-		margin-bottom: 6px;
 		padding: 4px 6px;
+		font: inherit;
+		font-size: 13px;
+		color: $rowTextColor;
+		background: #fff;
 		border: 1px solid $borderColor;
 		border-radius: 3px;
-		background: #fff;
-		color: #000;
-		font: inherit;
-		font-size: 12px;
 	}
 
 	.tabulator-header-filter-minmax-apply,
 	.tabulator-header-filter-minmax-clear {
+		min-height: 28px;
 		padding: 4px 8px;
-		border: 1px solid $borderColor;
-		border-radius: 3px;
 		font: inherit;
 		font-size: 12px;
+		border-radius: 3px;
 		cursor: pointer;
 	}
 
 	.tabulator-header-filter-minmax-apply {
-		margin-right: 5px;
-		background: $headerBackgroundColor;
 		color: #fff;
+		background: $headerBackgroundColor;
+		border: 1px solid $headerBackgroundColor;
+	}
+
+	.tabulator-header-filter-minmax-apply:hover {
+		background: color.adjust($headerBackgroundColor, $lightness: -10%);
 	}
 
 	.tabulator-header-filter-minmax-clear {
-		background: #fff;
-		color: #000;
+		color: $rowTextColor;
+		background: transparent;
+		border: 1px solid $borderColor;
 	}
-	
+
+	.tabulator-header-filter-minmax-clear:hover {
+		background: $rowHoverBackground;
+	}
+
 	.tabulator-footer {
 		border-top: 1px solid $footerSeparatorColor;
 		background-color: $footerBackgroundColor;
