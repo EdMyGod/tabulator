@@ -208,13 +208,12 @@ $rangeHeaderTextHighlightBackground: #000;
 
 	}
 
-	.tabulator-group-toggle {
-		.tabulator-arrow {
-			border-top-color: $groupToggleColor;
-			border-bottom-color: $groupToggleColor;
-			border-left-color: $groupToggleColor;
-			border-right-color: $groupToggleColor;
-		}
+	.tabulator-row.tabulator-group .tabulator-arrow {
+		border-left-color: $groupToggleColor
+	}
+	
+	.tabulator-row.tabulator-group.tabulator-group-visible .tabulator-arrow {
+		border-top-color: $groupToggleColor
 	}
 	
 	.tabulator-footer {
