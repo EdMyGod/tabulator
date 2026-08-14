@@ -1,14 +1,14 @@
 function minmaxEditor(cell, onRendered, success, cancel){
 	var currentValue = cell.getValue() || {},
-		container = document.createElement("div"),
-		button = document.createElement("button"),
-		popup = document.createElement("div"),
-		mode = document.createElement("select"),
-		start = document.createElement("input"),
-		end = document.createElement("input"),
-		apply = document.createElement("button"),
-		clear = document.createElement("button"),
-		modeValue = currentValue.mode || (currentValue.start && currentValue.end ? "range" : currentValue.start ? "from" : currentValue.end ? "to" : "range");
+	container = document.createElement("div"),
+	button = document.createElement("button"),
+	popup = document.createElement("div"),
+	mode = document.createElement("select"),
+	start = document.createElement("input"),
+	end = document.createElement("input"),
+	apply = document.createElement("button"),
+	clear = document.createElement("button"),
+	modeValue = currentValue.mode || (currentValue.start && currentValue.end ? "range" : currentValue.start ? "from" : currentValue.end ? "to" : "range");
 
 	container.classList.add("tabulator-header-filter-minmax");
 	button.type = "button";
@@ -146,7 +146,7 @@ function minmaxEditor(cell, onRendered, success, cancel){
 
 function minmaxFilter(headerValue, rowValue){
 	var start = headerValue && headerValue.start || "",
-		end = headerValue && headerValue.end || "";
+	end = headerValue && headerValue.end || "";
 
 	if(!start && !end){
 		return true;

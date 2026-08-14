@@ -209,9 +209,9 @@ export default class Filter extends Module{
 		//handle successfully value change
 		function success(value){
 			var filterType = (column.modules.filter.tagType == "input" && column.modules.filter.attrType == "text") || column.modules.filter.tagType == "textarea" ? "partial" : "match",
-				type = "",
-				filterChangeCheck = "",
-				filterFunc;
+			type = "",
+			filterChangeCheck = "",
+			filterFunc;
 
 			if(typeof column.modules.filter.prevSuccess === "undefined" || column.modules.filter.prevSuccess !== value){
 
@@ -232,8 +232,8 @@ export default class Filter extends Module{
 								type = headerFilterFunc;
 								filterFunc = function(data){
 									var params = column.definition.headerFilterFuncParams || {},
-										fieldVal = column.getFieldValue(data),
-										filter = Filter.filters[headerFilterFunc] || Filter.headerFilters[headerFilterFunc].func;
+									fieldVal = column.getFieldValue(data),
+									filter = Filter.filters[headerFilterFunc] || Filter.headerFilters[headerFilterFunc].func;
 
 									params = typeof params === "function" ? params(value, fieldVal, data) : params;
 
@@ -844,7 +844,7 @@ export default class Filter extends Module{
 	//filter row array
 	filter(rowList, filters){
 		var activeRows = [],
-			activeRowComponents = [];
+		activeRowComponents = [];
 
 		if(this.subscribedExternal("dataFiltering")){
 			this.dispatchExternal("dataFiltering", this.getFilters(true));
@@ -877,7 +877,7 @@ export default class Filter extends Module{
 	//filter individual row
 	filterRow(row, filters){
 		var match = true,
-			data = row.getData();
+		data = row.getData();
 
 		this.filterList.forEach((filter) => {
 			if(!this.filterRecurse(filter, data)){
