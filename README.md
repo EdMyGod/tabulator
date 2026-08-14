@@ -18,7 +18,6 @@
 <p align="center">
   <img src="docs/cubisio-demo.jpg" alt="Cubisio Tabulator" width="100%">
 </p>
-***
 
 ## О проекте
 
