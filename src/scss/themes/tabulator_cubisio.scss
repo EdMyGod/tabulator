@@ -232,7 +232,7 @@ $rangeHeaderTextHighlightBackground: #000;
 		font: inherit;
 		font-size: inherit;
 		line-height: normal;
-		color: inherit;
+		color: $rowTextColor;
 		background: #fff;
 		border: 1px solid $borderColor;
 		border-radius: 2px;
@@ -245,7 +245,7 @@ $rangeHeaderTextHighlightBackground: #000;
 	}
 
 	.tabulator-header-filter-minmax-trigger::placeholder {
-		color: inherit;
+		color: $rowTextColor;
 		opacity: .75;
 	}
 
