@@ -1,18 +1,21 @@
 function minmaxEditor(cell, onRendered, success, cancel){
 	var currentValue = cell.getValue() || {},
-	container = document.createElement("div"),
-	button = document.createElement("button"),
-	popup = document.createElement("div"),
-	mode = document.createElement("select"),
-	start = document.createElement("input"),
-	end = document.createElement("input"),
-	apply = document.createElement("button"),
-	clear = document.createElement("button"),
-	modeValue = currentValue.mode || (currentValue.start && currentValue.end ? "range" : currentValue.start ? "from" : currentValue.end ? "to" : "range");
+		container = document.createElement("div"),
+		button = document.createElement("input"),
+		popup = document.createElement("div"),
+		mode = document.createElement("select"),
+		start = document.createElement("input"),
+		end = document.createElement("input"),
+		apply = document.createElement("button"),
+		clear = document.createElement("button"),
+		modeValue = currentValue.mode || (currentValue.start && currentValue.end ? "range" : currentValue.start ? "from" : currentValue.end ? "to" : "range"),
+		popupOpen = false;
 
 	container.classList.add("tabulator-header-filter-minmax");
-	button.type = "button";
+	button.type = "text";
+	button.readOnly = true;
 	button.classList.add("tabulator-header-filter-minmax-trigger");
+	button.placeholder = "Дата";
 	button.setAttribute("aria-haspopup", "dialog");
 	button.setAttribute("aria-expanded", "false");
 
@@ -56,7 +59,6 @@ function minmaxEditor(cell, onRendered, success, cancel){
 	popup.appendChild(apply);
 	popup.appendChild(clear);
 	container.appendChild(button);
-	container.appendChild(popup);
 
 	function updateInputs(){
 		start.hidden = mode.value === "to";
@@ -73,7 +75,7 @@ function minmaxEditor(cell, onRendered, success, cancel){
 	}
 
 	function updateButton(){
-		var text = "Дата";
+		var text = "";
 
 		if(mode.value === "from" && start.value){
 			text = "с " + formatDate(start.value);
@@ -83,17 +85,66 @@ function minmaxEditor(cell, onRendered, success, cancel){
 			text = (start.value ? formatDate(start.value) : "…") + " — " + (end.value ? formatDate(end.value) : "…");
 		}
 
-		button.textContent = text;
+		button.value = text;
+	}
+
+	function positionPopup(){
+		var rect = button.getBoundingClientRect(),
+			width = 220,
+			left = rect.left,
+			top = rect.bottom + 4,
+			maxLeft = window.innerWidth - width - 8;
+
+		if(left > maxLeft){
+			left = Math.max(8, maxLeft);
+		}
+
+		popup.style.left = left + "px";
+		popup.style.top = top + "px";
+
+		if(top + popup.offsetHeight > window.innerHeight - 8 && rect.top > popup.offsetHeight + 8){
+			popup.style.top = (rect.top - popup.offsetHeight - 4) + "px";
+		}
+	}
+
+	function closePopup(){
+		if(!popupOpen){
+			return;
+		}
+
+		popupOpen = false;
+		popup.hidden = true;
+		button.setAttribute("aria-expanded", "false");
+		if(popup.parentNode){
+			popup.parentNode.removeChild(popup);
+		}
+		document.removeEventListener("mousedown", outsideClick);
+		window.removeEventListener("resize", positionPopup);
+		window.removeEventListener("scroll", positionPopup, true);
+	}
+
+	function outsideClick(e){
+		if(!container.contains(e.target) && !popup.contains(e.target)){
+			closePopup();
+		}
 	}
 
 	function togglePopup(){
-		popup.hidden = !popup.hidden;
-		button.setAttribute("aria-expanded", popup.hidden ? "false" : "true");
-
-		if(!popup.hidden){
-			updateInputs();
-			start.focus();
+		if(popupOpen){
+			closePopup();
+			return;
 		}
+
+		popupOpen = true;
+		popup.hidden = false;
+		document.body.appendChild(popup);
+		button.setAttribute("aria-expanded", "true");
+		updateInputs();
+		positionPopup();
+		start.focus();
+		document.addEventListener("mousedown", outsideClick);
+		window.addEventListener("resize", positionPopup);
+		window.addEventListener("scroll", positionPopup, true);
 	}
 
 	function applyFilter(){
@@ -108,8 +159,7 @@ function minmaxEditor(cell, onRendered, success, cancel){
 		}
 
 		updateButton();
-		popup.hidden = true;
-		button.setAttribute("aria-expanded", "false");
+		closePopup();
 		success(value);
 	}
 
@@ -117,8 +167,7 @@ function minmaxEditor(cell, onRendered, success, cancel){
 		start.value = "";
 		end.value = "";
 		updateButton();
-		popup.hidden = true;
-		button.setAttribute("aria-expanded", "false");
+		closePopup();
 		success({});
 	}
 
@@ -132,8 +181,7 @@ function minmaxEditor(cell, onRendered, success, cancel){
 
 	container.addEventListener("keydown", function(e){
 		if(e.key === "Escape"){
-			popup.hidden = true;
-			button.setAttribute("aria-expanded", "false");
+			closePopup();
 			cancel();
 		}
 	});
@@ -146,7 +194,7 @@ function minmaxEditor(cell, onRendered, success, cancel){
 
 function minmaxFilter(headerValue, rowValue){
 	var start = headerValue && headerValue.start || "",
-	end = headerValue && headerValue.end || "";
+		end = headerValue && headerValue.end || "";
 
 	if(!start && !end){
 		return true;
