@@ -7,89 +7,169 @@
 </p>
 
 <p align="center">
-An easy to use interactive table generation JavaScript library
+Интерактивная JavaScript-библиотека для создания таблиц
 </p>
 
 <p align="center">
-Full documentation & demos can be found at:  <a href="http://tabulator.info">http://tabulator.info</a>
+Полная документация и демонстрации: <a href="http://tabulator.info">http://tabulator.info</a>
 </p>
 
 ***
 ![Tabulator Table](http://tabulator.info/images/tabulator_table.jpg)
 ***
 
+## О проекте
 
-Features
-================================
-Tabulator allows you to create interactive tables in seconds from any HTML Table, Javascript Array or JSON formatted data.
+Tabulator позволяет быстро создавать интерактивные таблицы из HTML-таблиц, JavaScript-массивов и JSON-данных.
 
-Simply include the library and the css in your project and you're away!
+Библиотека поддерживает сортировку, фильтрацию, группировку, выбор строк, редактирование, пагинацию, расчёты, экспорт и другие возможности.
 
-Tabulator is packed with useful features including:
+Этот форк дополнительно адаптирован под рабочие таблицы Cubisio: добавлены безопасные значения по умолчанию, русская локализация и единый визуальный стиль.
 
-![Tabulator Features](http://olifolkerd.github.io/tabulator/images/featurelist_share.png)
+## Дополнения этой версии
 
+### Безопасные defaults
 
-Frontend Framework Support
-================================
-Tabulator is built to work with all the major front end JavaScript frameworks including React, Angular and Vue.
+- Русский язык (`ru`) используется как локаль по умолчанию.
+- Минимальная допустимая ширина столбца — **10px**.
+- Для групп по умолчанию переключение выполняется нажатием на весь GroupHeader, а не только на стрелку.
+- Добавлен переиспользуемый preset для `rowHeader` с возможностью передавать и переопределять `headerMenu` и добавлять дополнительные обработчики событий.
 
+### Расчёты и выбор строк
 
-Setup
-================================
-Setting up tabulator could not be simpler.
+Добавлен расчёт `selectedSum`: если строки выбраны, итог считается только по выбранным строкам; если выбор отсутствует — по всем строкам.
 
-Include the library and the css
+Для пересчёта итогов после изменения выбора строк используется автоматический `recalc` при `rowSelected` и `rowDeselected`.
+
+### Работа с данными
+
+Добавлена функция `cubisioData()` для преобразования объекта массивов одинаковой длины в массив объектов, пригодный для передачи непосредственно в `data` Tabulator:
+
+```js
+data: cubisioData(data)
+```
+
+### Фильтры
+
+Добавлен встроенный header filter `minmax`:
+
+```js
+headerFilter: "minmax"
+```
+
+Фильтр позволяет выбрать:
+
+- дату «с»;
+- дату «по»;
+- интервал дат.
+
+В заголовке используется компактное поле, а выбор диапазона открывается во всплывающем окне.
+
+Также сохранён стандартный пользовательский `customHeaderFilter` для сценариев, где требуется собственная логика фильтрации.
+
+### Экспорт
+
+В тестовый пример добавлен и используется модифицированный экспорт, чтобы проверить совместимость экспортируемых данных с остальными доработками таблицы.
+
+### Cubisio-тема
+
+Добавлена и адаптирована тема `tabulator_cubisio.scss`:
+
+- единый фон строк `#eae5e2`;
+- одинаковый фон чётных и нечётных строк;
+- hover и selected строк `rgb(229, 239, 241)`;
+- такой же hover/selected фон для `rowHeader`;
+- отдельное оформление GroupHeader с более тёмным фоном и hover;
+- чёрные значки сворачивания/разворачивания групп;
+- светлые значки сортировки на синем фоне;
+- единое оформление `rowHeader`;
+- сохранён белый текст footer и границы ячеек;
+- стилизованный footer и пагинатор;
+- выбранная страница пагинации оформлена без яркого красного цвета;
+- минимальная ширина столбцов и безопасные значения по умолчанию приведены к единому стилю.
+
+### Локализация
+
+Добавлена русская локализация, включая пагинацию:
+
+- Первая / Последняя;
+- Назад / Вперёд;
+- Размер страницы;
+- Показано / из / строк;
+- сообщения загрузки и ошибки.
+
+Русская локаль используется по умолчанию, но при необходимости может быть переопределена настройкой `locale` конкретной таблицы.
+
+## Поддержка frontend-фреймворков
+
+Tabulator рассчитан на работу с основными frontend-фреймворками, включая React, Angular и Vue.
+
+## Установка
+
+Подключите библиотеку и CSS:
+
 ```html
 <link href="dist/css/tabulator.min.css" rel="stylesheet">
 <script type="text/javascript" src="dist/js/tabulator.min.js"></script>
 ```
 
-Create an element to hold the table
+Создайте элемент для таблицы:
+
 ```html
 <div id="example-table"></div>
 ```
 
-Turn the element into a tabulator with some simple javascript
+Инициализируйте Tabulator:
+
 ```js
 var table = new Tabulator("#example-table", {});
 ```
 
+### Установка через NPM
 
-### Bower Installation
-To get Tabulator via the Bower package manager, open a terminal in your project directory and run the following command:
-```
-bower install tabulator --save
-```
-
-### NPM Installation
-To get Tabulator via the NPM package manager, open a terminal in your project directory and run the following command:
-```
+```bash
 npm install tabulator-tables --save
 ```
 
-### CDN - UNPKG
-To access Tabulator directly from the UNPKG CDN servers, include the following two lines at the start of your project, instead of the locally hosted versions:
+### CDN — UNPKG
+
 ```html
 <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
 ```
 
-Testing
-================================
-Tabulator comes with both Unit and End-to-End (E2E) tests. Here’s how you can run them:
+## Сборка
+
+После изменений в исходниках выполните:
 
 ```bash
-# Unit test
+npm run build
+```
+
+## Тестирование
+
+В Tabulator есть Unit и End-to-End (E2E) тесты:
+
+```bash
+# Unit-тесты
 npm run test:unit
 
-# E2E test
-npm run build # Make sure to build the project first
-npx playwright test # Run the tests
-# or
+# E2E-тесты
+npm run build
+npx playwright test
+# или
 npm run test:e2e
 
-# Run all tests
+# Все тесты
 npm run test
 ```
 
+## Демонстрация
+
+Основной smoke-test и пример добавленных возможностей находится в:
+
+```text
+examples/10-full-demo.html
+```
+
+В нём собраны демонстрации русской пагинации, группировки, выбора строк, `selectedSum`, `cubisioData`, `minmax`, экспорта и Cubisio-темы.
