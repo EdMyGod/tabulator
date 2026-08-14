@@ -208,7 +208,7 @@ $rangeHeaderTextHighlightBackground: #000;
 
 	}
 
-	.tabulator-row.tabulator-group .tabulator-arrow {
+	.tabulator-row.tabulator-group:not(.tabulator-group-visible) .tabulator-arrow {
 		border-left-color: $groupToggleColor
 	}
 	

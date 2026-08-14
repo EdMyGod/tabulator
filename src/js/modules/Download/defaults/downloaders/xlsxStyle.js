@@ -6,10 +6,10 @@ function fitToColumn(arrayOfArray){
 
 function rgba2hex(orig){
 	var a,
-		rgb = orig.replace(/\s/g, '').match(/^rgba?\((\d+),(\d+),(\d+),?([^,\s)]+)?/i),
-		alpha = (rgb && rgb[4] || "").trim(),
-		hex = rgb ?
-			(rgb[1] | 1 << 8).toString(16).slice(1) +
+	rgb = orig.replace(/\s/g, '').match(/^rgba?\((\d+),(\d+),(\d+),?([^,\s)]+)?/i),
+	alpha = (rgb && rgb[4] || "").trim(),
+	hex = rgb ?
+		(rgb[1] | 1 << 8).toString(16).slice(1) +
 			(rgb[2] | 1 << 8).toString(16).slice(1) +
 			(rgb[3] | 1 << 8).toString(16).slice(1) : orig;
 
@@ -27,20 +27,20 @@ function rgba2hex(orig){
 
 function createCell(value, component, style, horizontal){
 	var type = typeof value === "number" ? "n" : "s",
-		numFmt = typeof value === "number" ? "#,##0.0" : "",
-		cellStyle = {
-			font:{
-				name:"Times New Roman",
-				sz:style.fontSize || 12,
-				bold:!!style.bold,
-				italic:!!style.italic,
-			},
-			alignment:{
-				vertical:"center",
-				wrapText:true,
-				horizontal:style.horizontal || horizontal,
-			}
-		};
+	numFmt = typeof value === "number" ? "#,##0.0" : "",
+	cellStyle = {
+		font:{
+			name:"Times New Roman",
+			sz:style.fontSize || 12,
+			bold:!!style.bold,
+			italic:!!style.italic,
+		},
+		alignment:{
+			vertical:"center",
+			wrapText:true,
+			horizontal:style.horizontal || horizontal,
+		}
+	};
 
 	if(component){
 		var color = rgba2hex(component.getElement().style.backgroundColor);
@@ -65,10 +65,10 @@ function createCell(value, component, style, horizontal){
 
 export default function(list, options, setFileContents){
 	var XLSXLib = this.dependencyRegistry.lookup("XLSX"),
-		workbook = XLSXLib.utils.book_new(),
-		fileContents = [],
-		merges = [],
-		r = 0;
+	workbook = XLSXLib.utils.book_new(),
+	fileContents = [],
+	merges = [],
+	r = 0;
 
 	list.forEach((row) => {
 		var item = [];
