@@ -206,17 +206,6 @@ $rangeHeaderTextHighlightBackground: #000;
 			color: $groupTextColor !important;
 		}
 
-		.tabulator-group-toggle {
-			background: transparent !important;
-
-			.tabulator-arrow {
-				background: transparent !important;
-				border-left-color: transparent !important;
-				border-right-color: transparent !important;
-				border-top-color: $groupToggleColor !important;
-				border-bottom-color: $groupToggleColor !important;
-			}
-		}
 	}
 
 	.tabulator-footer {
