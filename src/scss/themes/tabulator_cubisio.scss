@@ -215,6 +215,85 @@ $rangeHeaderTextHighlightBackground: #000;
 	.tabulator-row.tabulator-group.tabulator-group-visible .tabulator-arrow {
 		border-top-color: $groupToggleColor
 	}
+
+	.tabulator-header-filter-minmax {
+		position: relative;
+		width: 100%;
+	}
+
+	.tabulator-header-filter-minmax-trigger {
+		width: 100%;
+		min-width: 0;
+		padding: 3px 6px;
+		border: 1px solid $borderColor;
+		border-radius: 3px;
+		background: #fff;
+		color: #000;
+		font: inherit;
+		font-size: 12px;
+		line-height: 1.4;
+		text-align: left;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		cursor: pointer;
+
+		&:hover,
+		&:focus {
+			background: color.adjust(#fff, $lightness: -5%);
+			outline: none;
+		}
+	}
+
+	.tabulator-header-filter-minmax-popup {
+		position: absolute;
+		top: calc(100% + 4px);
+		left: 0;
+		z-index: 1000;
+		width: 190px;
+		padding: 8px;
+		border: 1px solid $borderColor;
+		border-radius: 4px;
+		background: #fff;
+		box-shadow: 0 3px 10px rgba(0, 0, 0, .18);
+		color: #000;
+	}
+
+	.tabulator-header-filter-minmax-mode,
+	.tabulator-header-filter-minmax-date {
+		display: block;
+		width: 100%;
+		box-sizing: border-box;
+		margin-bottom: 6px;
+		padding: 4px 6px;
+		border: 1px solid $borderColor;
+		border-radius: 3px;
+		background: #fff;
+		color: #000;
+		font: inherit;
+		font-size: 12px;
+	}
+
+	.tabulator-header-filter-minmax-apply,
+	.tabulator-header-filter-minmax-clear {
+		padding: 4px 8px;
+		border: 1px solid $borderColor;
+		border-radius: 3px;
+		font: inherit;
+		font-size: 12px;
+		cursor: pointer;
+	}
+
+	.tabulator-header-filter-minmax-apply {
+		margin-right: 5px;
+		background: $headerBackgroundColor;
+		color: #fff;
+	}
+
+	.tabulator-header-filter-minmax-clear {
+		background: #fff;
+		color: #000;
+	}
 	
 	.tabulator-footer {
 		border-top: 1px solid $footerSeparatorColor;
