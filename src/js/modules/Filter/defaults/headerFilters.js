@@ -1,15 +1,15 @@
 function minmaxEditor(cell, onRendered, success, cancel){
 	var currentValue = cell.getValue() || {},
-		container = document.createElement("div"),
-		button = document.createElement("input"),
-		popup = document.createElement("div"),
-		mode = document.createElement("select"),
-		start = document.createElement("input"),
-		end = document.createElement("input"),
-		apply = document.createElement("button"),
-		clear = document.createElement("button"),
-		modeValue = currentValue.mode || (currentValue.start && currentValue.end ? "range" : currentValue.start ? "from" : currentValue.end ? "to" : "range"),
-		popupOpen = false;
+	container = document.createElement("div"),
+	button = document.createElement("input"),
+	popup = document.createElement("div"),
+	mode = document.createElement("select"),
+	start = document.createElement("input"),
+	end = document.createElement("input"),
+	apply = document.createElement("button"),
+	clear = document.createElement("button"),
+	modeValue = currentValue.mode || (currentValue.start && currentValue.end ? "range" : currentValue.start ? "from" : currentValue.end ? "to" : "range"),
+	popupOpen = false;
 
 	container.classList.add("tabulator-header-filter-minmax");
 	button.type = "text";
@@ -90,10 +90,10 @@ function minmaxEditor(cell, onRendered, success, cancel){
 
 	function positionPopup(){
 		var rect = button.getBoundingClientRect(),
-			width = 220,
-			left = rect.left,
-			top = rect.bottom + 4,
-			maxLeft = window.innerWidth - width - 8;
+		width = 220,
+		left = rect.left,
+		top = rect.bottom + 4,
+		maxLeft = window.innerWidth - width - 8;
 
 		if(left > maxLeft){
 			left = Math.max(8, maxLeft);
@@ -194,7 +194,7 @@ function minmaxEditor(cell, onRendered, success, cancel){
 
 function minmaxFilter(headerValue, rowValue){
 	var start = headerValue && headerValue.start || "",
-		end = headerValue && headerValue.end || "";
+	end = headerValue && headerValue.end || "";
 
 	if(!start && !end){
 		return true;
