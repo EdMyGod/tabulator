@@ -215,101 +215,44 @@ $rangeHeaderTextHighlightBackground: #000;
 		border-top-color: $groupToggleColor;
 	}
 
-	// Compact minmax header filter
+	// Compact minmax header filter. The trigger stays inside the header,
+	// while the popup is moved to body by the editor and styled below.
 	.tabulator-header-filter-minmax {
-		position: relative;
 		width: 100%;
 		min-width: 0;
 	}
 
 	.tabulator-header-filter-minmax-trigger {
+		box-sizing: border-box;
 		display: block;
 		width: 100%;
-		min-height: 28px;
-		padding: 3px 22px 3px 7px;
-		overflow: hidden;
-		text-align: left;
-		text-overflow: ellipsis;
-		white-space: nowrap;
+		height: 100%;
+		min-height: 24px;
+		padding: 2px 4px;
 		font: inherit;
-		font-size: 12px;
-		line-height: 20px;
-		color: $rowTextColor;
-		background: $rowBackgroundColor;
+		font-size: inherit;
+		line-height: normal;
+		color: inherit;
+		background: #fff;
 		border: 1px solid $borderColor;
-		border-radius: 3px;
+		border-radius: 2px;
+		outline: none;
 		cursor: pointer;
+		text-align: left;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.tabulator-header-filter-minmax-trigger::placeholder {
+		color: inherit;
+		opacity: .75;
 	}
 
 	.tabulator-header-filter-minmax-trigger:hover,
-	.tabulator-header-filter-minmax-trigger[aria-expanded="true"] {
-		background: $rowHoverBackground;
-	}
-
-	.tabulator-header-filter-minmax-popup {
-		position: absolute;
-		top: calc(100% + 4px);
-		left: 0;
-		z-index: 1000;
-		display: flex;
-		width: 210px;
-		box-sizing: border-box;
-		padding: 8px;
-		flex-direction: column;
-		gap: 6px;
-		background: $rowBackgroundColor;
-		border: 1px solid $borderColor;
-		border-radius: 4px;
-		box-shadow: 0 3px 10px rgba(0, 0, 0, .2);
-		text-align: left;
-	}
-
-	.tabulator-header-filter-minmax-popup[hidden] {
-		display: none;
-	}
-
-	.tabulator-header-filter-minmax-mode,
-	.tabulator-header-filter-minmax-date {
-		width: 100%;
-		min-height: 30px;
-		box-sizing: border-box;
-		padding: 4px 6px;
-		font: inherit;
-		font-size: 13px;
-		color: $rowTextColor;
+	.tabulator-header-filter-minmax-trigger:focus {
 		background: #fff;
-		border: 1px solid $borderColor;
-		border-radius: 3px;
-	}
-
-	.tabulator-header-filter-minmax-apply,
-	.tabulator-header-filter-minmax-clear {
-		min-height: 28px;
-		padding: 4px 8px;
-		font: inherit;
-		font-size: 12px;
-		border-radius: 3px;
-		cursor: pointer;
-	}
-
-	.tabulator-header-filter-minmax-apply {
-		color: #fff;
-		background: $headerBackgroundColor;
-		border: 1px solid $headerBackgroundColor;
-	}
-
-	.tabulator-header-filter-minmax-apply:hover {
-		background: color.adjust($headerBackgroundColor, $lightness: -10%);
-	}
-
-	.tabulator-header-filter-minmax-clear {
-		color: $rowTextColor;
-		background: transparent;
-		border: 1px solid $borderColor;
-	}
-
-	.tabulator-header-filter-minmax-clear:hover {
-		background: $rowHoverBackground;
+		border-color: $borderColor;
 	}
 
 	.tabulator-footer {
@@ -344,4 +287,71 @@ $rangeHeaderTextHighlightBackground: #000;
 			border-color: $paginationActiveBorderColor;
 		}
 	}
+}
+
+// The minmax popup is appended to document.body, so it must not be nested
+// under .tabulator. It is positioned in viewport coordinates by the editor.
+.tabulator-header-filter-minmax-popup {
+	position: fixed;
+	z-index: 10000;
+	display: flex;
+	width: 220px;
+	box-sizing: border-box;
+	padding: 8px;
+	flex-direction: column;
+	gap: 6px;
+	background: $rowBackgroundColor;
+	border: 1px solid $borderColor;
+	border-radius: 4px;
+	box-shadow: 0 3px 10px rgba(0, 0, 0, .2);
+	text-align: left;
+}
+
+.tabulator-header-filter-minmax-popup[hidden] {
+	display: none;
+}
+
+.tabulator-header-filter-minmax-mode,
+.tabulator-header-filter-minmax-date {
+	width: 100%;
+	min-height: 30px;
+	box-sizing: border-box;
+	padding: 4px 6px;
+	font: inherit;
+	font-size: 13px;
+	line-height: normal;
+	color: $rowTextColor;
+	background: #fff;
+	border: 1px solid $borderColor;
+	border-radius: 3px;
+}
+
+.tabulator-header-filter-minmax-apply,
+.tabulator-header-filter-minmax-clear {
+	min-height: 28px;
+	padding: 4px 8px;
+	font: inherit;
+	font-size: 12px;
+	border-radius: 3px;
+	cursor: pointer;
+}
+
+.tabulator-header-filter-minmax-apply {
+	color: #fff;
+	background: $headerBackgroundColor;
+	border: 1px solid $headerBackgroundColor;
+}
+
+.tabulator-header-filter-minmax-apply:hover {
+	background: color.adjust($headerBackgroundColor, $lightness: -10%);
+}
+
+.tabulator-header-filter-minmax-clear {
+	color: $rowTextColor;
+	background: transparent;
+	border: 1px solid $borderColor;
+}
+
+.tabulator-header-filter-minmax-clear:hover {
+	background: $rowHoverBackground;
 }
