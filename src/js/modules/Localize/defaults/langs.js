@@ -34,4 +34,39 @@ export default {
 			"columns":{}
 		}
 	},
+	"ru":{
+		"groups":{
+			"item":"строк",
+			"items":"строк",
+		},
+		"columns":{
+		},
+		"data":{
+			"loading":"Загрузка",
+			"error":"Ошибка",
+		},
+		"pagination":{
+			"page_size":"Количество строк",
+			"page_title":"Страница",
+			"first":"Начало",
+			"first_title":"Первая страница",
+			"last":"Конец",
+			"last_title":"Последняя страница",
+			"prev":"Назад",
+			"prev_title":"Предыдущая страница",
+			"next":"Далее",
+			"next_title":"Следующая страница",
+			"all":"Все",
+			"counter":{
+				"showing":"Показано",
+				"of":"из",
+				"rows":"строк",
+				"pages":"страниц",
+			}
+		},
+		"headerFilters":{
+			"default":"фильтр...",
+			"columns":{}
+		}
+	},
 };
