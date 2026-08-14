@@ -193,7 +193,7 @@ $rangeHeaderTextHighlightBackground: #000;
 	}
 
 	.tabulator-group {
-		color: $groupTextColor !important;
+		color: $groupTextColor;
 		background: $groupBackgroundColor !important;
 		border-bottom: 1px solid $borderColor;
 		transition: background-color .12s ease;
@@ -208,6 +208,15 @@ $rangeHeaderTextHighlightBackground: #000;
 
 	}
 
+	.tabulator-group-toggle {
+		.tabulator-arrow {
+			border-top-color: $groupToggleColor;
+			border-bottom-color: $groupToggleColor;
+			border-left-color: $groupToggleColor;
+			border-right-color: $groupToggleColor;
+		}
+	}
+	
 	.tabulator-footer {
 		border-top: 1px solid $footerSeparatorColor;
 		background-color: $footerBackgroundColor;
