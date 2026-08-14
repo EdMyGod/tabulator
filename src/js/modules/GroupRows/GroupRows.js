@@ -30,7 +30,7 @@ export default class GroupRows extends Module{
 		this.registerTableOption("groupHeaderClipboard", null);
 		this.registerTableOption("groupHeaderHtmlOutput", null);
 		this.registerTableOption("groupHeaderDownload", null);
-		this.registerTableOption("groupToggleElement", "arrow");
+		this.registerTableOption("groupToggleElement", "header");
 		this.registerTableOption("groupClosedShowCalcs", false);
 		
 		//register table functions
