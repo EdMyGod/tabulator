@@ -205,7 +205,8 @@ describe('ColumnCalcs', function(){
 						botCalcParams: {}
 					}
 				},
-				getFieldValue: function(row) { return row.age; },
+				getField: function() { return "age"; },
+                            getFieldValue: function(row) { return row.age; },
 				setFieldValue: function(row, value) { row.age = value; }
 			};
 
@@ -218,7 +219,8 @@ describe('ColumnCalcs', function(){
 						botCalcParams: {}
 					}
 				},
-				getFieldValue: function(row) { return row.total; },
+				getField: function() { return "total"; },
+                            getFieldValue: function(row) { return row.total; },
 				setFieldValue: function(row, value) { row.total = value; }
 			};
 

@@ -89,7 +89,7 @@ describe("Localize module", () => {
     
     it("should register table options during construction", () => {
         // Verify table options are registered
-        expect(mockTable.optionsList.register).toHaveBeenCalledWith("locale", false);
+        expect(mockTable.optionsList.register).toHaveBeenCalledWith("locale", "ru");
         expect(mockTable.optionsList.register).toHaveBeenCalledWith("langs", {});
     });
     
