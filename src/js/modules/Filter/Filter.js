@@ -1,6 +1,7 @@
 import Module from '../../core/Module.js';
 
 import defaultFilters from './defaults/filters.js';
+import defaultHeaderFilters from './defaults/headerFilters.js';
 
 export default class Filter extends Module{
 
@@ -8,6 +9,7 @@ export default class Filter extends Module{
 
 	//load defaults
 	static filters = defaultFilters;
+	static headerFilters = defaultHeaderFilters;
 
 	constructor(table){
 		super(table);
@@ -218,20 +220,27 @@ export default class Filter extends Module{
 				if(!column.modules.filter.emptyFunc(value)){
 					column.modules.filter.value = value;
 
-					switch(typeof column.definition.headerFilterFunc){
+					var headerFilterFunc = column.definition.headerFilterFunc;
+
+					if(!headerFilterFunc && column.definition.headerFilter === "minmax"){
+						headerFilterFunc = "minmax";
+					}
+
+					switch(typeof headerFilterFunc){
 						case "string":
-							if(Filter.filters[column.definition.headerFilterFunc]){
-								type = column.definition.headerFilterFunc;
+							if(Filter.filters[headerFilterFunc] || Filter.headerFilters[headerFilterFunc]){
+								type = headerFilterFunc;
 								filterFunc = function(data){
-									var params = column.definition.headerFilterFuncParams || {};
-									var fieldVal = column.getFieldValue(data);
+									var params = column.definition.headerFilterFuncParams || {},
+									fieldVal = column.getFieldValue(data),
+									filter = Filter.filters[headerFilterFunc] || Filter.headerFilters[headerFilterFunc].func;
 
 									params = typeof params === "function" ? params(value, fieldVal, data) : params;
 
-									return Filter.filters[column.definition.headerFilterFunc](value, fieldVal, data, params);
+									return filter(value, fieldVal, data, params);
 								};
 							}else{
-								console.warn("Header Filter Error - Matching filter function not found: ", column.definition.headerFilterFunc);
+								console.warn("Header Filter Error - Matching filter function not found: ", headerFilterFunc);
 							}
 							break;
 
@@ -334,7 +343,9 @@ export default class Filter extends Module{
 			//set column editor
 			switch(typeof column.definition.headerFilter){
 				case "string":
-					if(self.table.modules.edit.editors[column.definition.headerFilter]){
+					if(Filter.headerFilters[column.definition.headerFilter]){
+						editor = Filter.headerFilters[column.definition.headerFilter].editor;
+					}else if(self.table.modules.edit.editors[column.definition.headerFilter]){
 						editor = self.table.modules.edit.editors[column.definition.headerFilter];
 
 						if((column.definition.headerFilter === "tick" || column.definition.headerFilter === "tickCross") && !column.definition.headerFilterEmptyCheck){

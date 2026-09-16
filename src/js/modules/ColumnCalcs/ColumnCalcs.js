@@ -113,6 +113,18 @@ export default class ColumnCalcs extends Module{
 	userRecalc(){
 		this.recalc(this.table.rowManager.activeRows);
 	}
+
+	recalcOnSelection(){
+	    this.recalcActiveRows();
+	
+	    if(this.table.options.groupBy && this.table.options.columnCalcs !== "table"){
+	        var groups = this.table.modules.groupRows.getChildGroups();
+	
+	        groups.forEach((group) => {
+	            this.recalcGroup(group);
+	        });
+	    }
+	}
 	
 	///////////////////////////////////
 	///////// Internal Logic //////////
@@ -497,7 +509,7 @@ export default class ColumnCalcs extends Module{
 		type = pos == "top" ? "topCalc" : "botCalc",
 		params, paramKey;
 		
-		calcs.forEach(function(column){
+		calcs.forEach((column) => {
 			var values = [];
 			
 			if(column.modules.columnCalcs && column.modules.columnCalcs[type]){
@@ -506,9 +518,20 @@ export default class ColumnCalcs extends Module{
 				});
 				
 				paramKey = type + "Params";
-				params = typeof column.modules.columnCalcs[paramKey] === "function" ? column.modules.columnCalcs[paramKey](values, data) : column.modules.columnCalcs[paramKey];
 				
-				column.setFieldValue(rowData, column.modules.columnCalcs[type](values, data, params));
+				params = typeof column.modules.columnCalcs[paramKey] === "function"
+				    ? column.modules.columnCalcs[paramKey](values, data)
+				    : column.modules.columnCalcs[paramKey];
+				
+				params = Object.assign({}, params, {
+				    table: this.table,
+				    field: column.getField(),
+				});
+				
+				column.setFieldValue(
+				    rowData,
+				    column.modules.columnCalcs[type](values, data, params)
+				);
 			}
 		});
 		

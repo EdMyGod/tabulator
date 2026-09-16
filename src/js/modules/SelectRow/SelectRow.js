@@ -20,6 +20,7 @@ export default class SelectRow extends Module{
 		this.registerTableOption("selectableRowsRollingSelection", true); //roll selection once maximum number of selectable rows is reached
 		this.registerTableOption("selectableRowsPersistence", true); // maintain selection when table view is updated
 		this.registerTableOption("selectableRowsCheck", function(data, row){return true;}); //check whether row is selectable
+		this.registerTableOption("recalcOnRowSelection", false);
 		
 		this.registerTableFunction("selectRow", this.selectRows.bind(this));
 		this.registerTableFunction("deselectRow", this.deselectRows.bind(this));
@@ -313,6 +314,10 @@ export default class SelectRow extends Module{
 				
 				this.dispatchExternal("rowSelected", row.getComponent());
 				
+				if(this.table.options.recalcOnRowSelection && this.table.modExists("columnCalcs")){
+				    this.table.modules.columnCalcs.recalcOnSelection();
+				}
+				
 				this._rowSelectionChanged(silent, row);
 
 				return row;
@@ -408,6 +413,10 @@ export default class SelectRow extends Module{
 				}
 				
 				this.dispatchExternal("rowDeselected", row.getComponent());
+				
+				if(this.table.options.recalcOnRowSelection && this.table.modExists("columnCalcs")){
+				    this.table.modules.columnCalcs.recalcOnSelection();
+				}
 				
 				self._rowSelectionChanged(silent, undefined, row);
 

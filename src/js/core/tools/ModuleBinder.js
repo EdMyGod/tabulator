@@ -8,6 +8,24 @@ export default class ModuleBinder extends TableRegistry {
 	static modulesRegistered = false;
 	
 	static defaultModules = false;
+
+	static cubisioData(object_arrays){
+		var keys = Object.keys(object_arrays);
+
+		if(!keys.length){
+			return [];
+		}
+
+		return object_arrays[keys[0]].map((_el, i) => {
+			var row = {};
+
+			keys.forEach(key => {
+				row[key] = object_arrays[key][i];
+			});
+
+			return row;
+		});
+	}
 	
 	constructor(){
 		super();

@@ -719,6 +719,124 @@ class Tabulator extends ModuleBinder{
 		return this.columnManager.getComponents(structured);
 	}
 	
+	getColumnVisibilityMenu(){
+		var buildMenu = (columns) => {
+			return columns.reduce((menu, column) => {
+				var definition = column.getDefinition();
+				var subColumns = column.getSubColumns();
+
+				// Группа колонок
+				if(subColumns.length){
+					var subMenu = buildMenu(subColumns);
+
+					if(subMenu.length){
+						menu.push({
+							label: definition.title || "",
+							menu: subMenu,
+						});
+					}
+
+					return menu;
+				}
+
+				// Не показываем конечные колонки без field
+				if(typeof definition.field === "undefined"){
+					return menu;
+				}
+
+				// Иконка checkbox
+				var icon = document.createElement("i");
+
+				icon.classList.add(
+					"fas",
+					column.isVisible() ? "fa-check-square" : "fa-square"
+				);
+
+				// Название
+				var label = document.createElement("span");
+
+				label.appendChild(icon);
+				label.appendChild(
+					document.createTextNode(" " + (definition.title || ""))
+				);
+
+				// Пункт меню
+				menu.push({
+					label: label,
+
+					action: (e) => {
+						e.stopPropagation();
+
+						column.toggle();
+
+						icon.classList.toggle(
+							"fa-check-square",
+							column.isVisible()
+						);
+
+						icon.classList.toggle(
+							"fa-square",
+							!column.isVisible()
+						);
+
+						this.redraw();
+					},
+				});
+
+				return menu;
+			}, []);
+		};
+
+		return buildMenu(this.getColumns(true));
+	}
+
+	static defaultRowHeader(options = {}){
+	    var defaults = {
+	        formatter: "rowSelection",
+	        width: 43,
+	        headerMenuIcon: "<i class='fa fa-bars'></i>",
+	        hozAlign: "center",
+	        vertAlign: "middle",
+	        headerSort: false,
+	        cellClick: function(e, cell){
+	            cell.getRow().toggleSelect();
+	        },
+	    };
+	
+	    var rowHeader = Object.assign({}, defaults, options);
+	
+	    if(options.cellClick){
+	        rowHeader.cellClick = function(e, cell){
+	            defaults.cellClick(e, cell);
+	            options.cellClick(e, cell);
+	        };
+	    }
+	
+	    return rowHeader;
+	}
+	
+	static selectedSum(values, data, calcParams){
+	    var selectedData = calcParams.table.getSelectedData();
+	
+	    if(selectedData.length){
+	        values = selectedData.map((row) => row[calcParams.field]);
+	    }
+	
+	    var calc = values.reduce((sum, value) => {
+	        return sum + (typeof value === "number" ? value : 0);
+	    }, 0);
+	
+	    return calc ? calc : "";
+	}
+	
+	static headerFilterStartsWith(headerValue, rowValue){
+	    if(!headerValue){
+	        return true;
+	    }
+	
+	    return new RegExp("^" + headerValue).test(rowValue);
+	}
+	
 	getColumn(field){
 		var column = this.columnManager.findColumn(field);
 		
