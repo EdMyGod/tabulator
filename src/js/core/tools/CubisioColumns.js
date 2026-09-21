@@ -62,7 +62,7 @@ export function cubisioMoneyColumn(title, field, options){
 		formatterParams: {
 			decimal: ",",
 			thousand: " ",
-			negativeSign: true,
+			negativeSign: "-",
 			precision: true,
 		},
 	}, options);
