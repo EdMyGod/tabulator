@@ -109,6 +109,12 @@ $rangeHeaderTextHighlightBackground: #000;
 			.tabulator-col-content {
 				padding: 4px;
 
+				.tabulator-col-title {
+					white-space: normal;
+					overflow-wrap: break-word;
+					word-break: normal;
+				}
+
 				.tabulator-header-popup-button {
 					color: $headerTextColor;
 
@@ -187,6 +193,9 @@ $rangeHeaderTextHighlightBackground: #000;
 
 		.tabulator-cell {
 			padding: 4px;
+			white-space: normal;
+			overflow-wrap: break-word;
+			word-break: normal;
 			border-right: 1px solid $rowBorderColor;
 			border-bottom: 1px solid $rowBorderColor;
 		}
