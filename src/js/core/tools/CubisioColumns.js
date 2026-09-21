@@ -52,24 +52,40 @@ function mergeColumn(defaults, options){
 	return Object.assign({}, defaults, options || {});
 }
 
+function finalizeBottomCalc(column){
+	if(column.bottomCalc === false){
+		delete column.bottomCalc;
+		delete column.bottomCalcParams;
+		delete column.bottomCalcFormatter;
+		delete column.bottomCalcFormatterParams;
+	}
+
+	return column;
+}
+
 export function cubisioMoneyColumn(title, field, options){
-	return mergeColumn({
+	const moneyParams = {
+		decimal: ",",
+		thousand: " ",
+		negativeSign: "-",
+		precision: true,
+	};
+
+	return finalizeBottomCalc(mergeColumn({
 		title,
 		field,
 		hozAlign: "right",
 		vertAlign: "middle",
 		formatter: "money",
-		formatterParams: {
-			decimal: ",",
-			thousand: " ",
-			negativeSign: true,
-			precision: true,
-		},
-	}, options);
+		formatterParams: moneyParams,
+		bottomCalc: "selectedSum",
+		bottomCalcFormatter: "money",
+		bottomCalcFormatterParams: moneyParams,
+	}, options));
 }
 
 export function cubisioDynamicPercentColumn(title, field, currentField, previousField, options){
-	return mergeColumn({
+	return finalizeBottomCalc(mergeColumn({
 		title,
 		field,
 		hozAlign: "right",
@@ -97,11 +113,11 @@ export function cubisioDynamicPercentColumn(title, field, currentField, previous
 			return (current / previous - 1) * 100;
 		},
 		bottomCalcFormatter: signedNumberFormatter("%"),
-	}, options);
+	}, options));
 }
 
 export function cubisioDynamicAbsoluteColumn(title, field, currentField, previousField, options){
-	return mergeColumn({
+	return finalizeBottomCalc(mergeColumn({
 		title,
 		field,
 		hozAlign: "right",
@@ -127,5 +143,5 @@ export function cubisioDynamicAbsoluteColumn(title, field, currentField, previou
 			return sumField(rows, currentField) - sumField(rows, previousField);
 		},
 		bottomCalcFormatter: signedNumberFormatter(),
-	}, options);
+	}, options));
 }
