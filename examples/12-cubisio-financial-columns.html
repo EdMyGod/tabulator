@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cubisio — проверка финансовых колонок</title>
+  <link rel="stylesheet" href="../dist/css/tabulator_cubisio.css" />
+  <script src="../dist/js/tabulator.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; }
+    .notes { max-width: 1100px; margin-bottom: 16px; line-height: 1.45; }
+    #example-table { max-width: 1400px; }
+  </style>
+</head>
+<body>
+  <div class="notes">
+    <h1>Cubisio: финансовые колонки и перенос текста</h1>
+    <p>
+      Синтетические данные. Демо проверяет перенос длинного текста и заголовков,
+      денежные колонки, процентную и абсолютную динамику, null/нулевую базу и
+      пересчёт итогов при выборе строк.
+    </p>
+    <p><strong>Проверка выбора:</strong> выберите одну или несколько строк. Итоги динамики должны пересчитаться только по выбранным строкам. Снимите весь выбор — итог снова считается по всем строкам.</p>
+  </div>
+
+  <div id="example-table"></div>
+
+  <script>
+    var year = 2026;
+    var zb = "01.12.2025 № 100";
+
+    var tabledata = [
+      {
+        id: 1,
+        name: "Раздел с очень длинным наименованием для проверки автоматического переноса текста внутри обычной ячейки таблицы",
+        "ЗБ_0год": 1000000,
+        "ЗБ_1год": 1200000,
+        "ЗБ_2год": 1400000,
+        "ЗБП_1год": 1350000,
+        "ЗБП_2год": 1300000,
+        "ЗБП_3год": 1600000
+      },
+      {
+        id: 2,
+        name: "Второй синтетический показатель с отрицательной динамикой",
+        "ЗБ_0год": 500000,
+        "ЗБ_1год": 600000,
+        "ЗБ_2год": 750000,
+        "ЗБП_1год": 550000,
+        "ЗБП_2год": 525000,
+        "ЗБП_3год": 700000
+      },
+      {
+        id: 3,
+        name: "Показатель без изменения значения",
+        "ЗБ_0год": 250000,
+        "ЗБ_1год": 250000,
+        "ЗБ_2год": 250000,
+        "ЗБП_1год": 250000,
+        "ЗБП_2год": 250000,
+        "ЗБП_3год": 250000
+      },
+      {
+        id: 4,
+        name: "Проверка нулевой базы для процентной динамики",
+        "ЗБ_0год": 0,
+        "ЗБ_1год": 0,
+        "ЗБ_2год": 0,
+        "ЗБП_1год": 100000,
+        "ЗБП_2год": 120000,
+        "ЗБП_3год": 150000
+      },
+      {
+        id: 5,
+        name: "Проверка отсутствующих значений (null)",
+        "ЗБ_0год": null,
+        "ЗБ_1год": null,
+        "ЗБ_2год": 100000,
+        "ЗБП_1год": null,
+        "ЗБП_2год": 120000,
+        "ЗБП_3год": null
+      }
+    ];
+
+    var table = new Tabulator("#example-table", {
+      data: tabledata,
+      layout: "fitColumns",
+      movableColumns: true,
+      selectableRows: true,
+      rowHeader: {
+        formatter: "rowSelection",
+        titleFormatter: "rowSelection",
+        headerSort: false,
+        resizable: false,
+        frozen: true,
+        hozAlign: "center",
+        headerHozAlign: "center"
+      },
+      columns: [
+        {
+          title: "Наименование показателя с намеренно длинным заголовком для проверки переноса",
+          field: "name",
+          widthGrow: 2,
+          vertAlign: "middle"
+        },
+        {
+          title: "Закон о бюджете от " + zb,
+          columns: [
+            Tabulator.cubisioMoneyColumn(year, "ЗБ_0год"),
+            Tabulator.cubisioMoneyColumn(year + 1, "ЗБ_1год"),
+            Tabulator.cubisioMoneyColumn(year + 2, "ЗБ_2год")
+          ]
+        },
+        {
+          title: "Законопроект с длинным групповым заголовком",
+          columns: [
+            Tabulator.cubisioMoneyColumn(year + 1, "ЗБП_1год"),
+            Tabulator.cubisioMoneyColumn(year + 2, "ЗБП_2год"),
+            Tabulator.cubisioMoneyColumn(year + 3, "ЗБП_3год")
+          ]
+        },
+        {
+          title: "Динамика изменений к аналогичным показателям закона о бюджете",
+          columns: [
+            Tabulator.cubisioDynamicPercentColumn(year + 1, "del1", "ЗБП_1год", "ЗБ_1год"),
+            Tabulator.cubisioDynamicPercentColumn(year + 2, "del2", "ЗБП_2год", "ЗБ_2год")
+          ]
+        },
+        {
+          title: "Динамика планируемых объемов в абсолютных величинах",
+          columns: [
+            Tabulator.cubisioDynamicAbsoluteColumn(year + 1, "abs1", "ЗБП_1год", "ЗБ_0год"),
+            Tabulator.cubisioDynamicAbsoluteColumn(year + 2, "abs2", "ЗБП_2год", "ЗБП_1год"),
+            Tabulator.cubisioDynamicAbsoluteColumn(year + 3, "abs3", "ЗБП_3год", "ЗБП_2год")
+          ]
+        }
+      ]
+    });
+  </script>
+</body>
+</html>
