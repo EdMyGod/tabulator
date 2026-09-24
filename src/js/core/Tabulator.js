@@ -21,7 +21,7 @@ import ModuleBinder from './tools/ModuleBinder.js';
 import OptionsList from './tools/OptionsList.js';
 
 import Alert from './tools/Alert.js';
-import {cubisioMoneyColumn, cubisioDynamicPercentColumn, cubisioDynamicAbsoluteColumn} from './tools/CubisioColumns.js';
+import {cubisioMoneyColumn, cubisioDynamicPercentColumn, cubisioDynamicAbsoluteColumn, cubisioRatioPercentColumn} from './tools/CubisioColumns.js';
 
 class Tabulator extends ModuleBinder{
 
@@ -31,6 +31,7 @@ class Tabulator extends ModuleBinder{
 	static cubisioMoneyColumn = cubisioMoneyColumn;
 	static cubisioDynamicPercentColumn = cubisioDynamicPercentColumn;
 	static cubisioDynamicAbsoluteColumn = cubisioDynamicAbsoluteColumn;
+	static cubisioRatioPercentColumn = cubisioRatioPercentColumn;
 
 	static extendModule(){
 		Tabulator.initializeModuleBinder();
