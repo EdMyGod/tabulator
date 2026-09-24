@@ -121,4 +121,38 @@ export default {
 	
 	    return output ? output : "";
 	},
+	"selectedRatio":function(values, data, calcParams){
+	    var selectedData = calcParams.table.getSelectedData();
+	    var rows = data;
+	
+	    if(selectedData.length){
+	        var dataSet = new Set(data);
+	
+	        rows = selectedData.filter(function(row){
+	            return dataSet.has(row);
+	        });
+	    }
+	
+	    var numerator = 0;
+	    var denominator = 0;
+	
+	    rows.forEach(function(row){
+	        var numeratorValue = Number(row[calcParams.numeratorField]);
+	        var denominatorValue = Number(row[calcParams.denominatorField]);
+	
+	        if(Number.isFinite(numeratorValue)){
+	            numerator += numeratorValue;
+	        }
+	
+	        if(Number.isFinite(denominatorValue)){
+	            denominator += denominatorValue;
+	        }
+	    });
+	
+	    if(!rows.length || denominator === 0){
+	        return "";
+	    }
+	
+	    return (numerator / denominator) * 100;
+	},
 };
