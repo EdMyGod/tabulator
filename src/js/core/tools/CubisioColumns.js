@@ -48,6 +48,19 @@ function signedNumberFormatter(suffix = ""){
 	};
 }
 
+function percentFormatter(cell){
+	const value = numberValue(cell.getValue());
+
+	if(value === null){
+		return "";
+	}
+
+	return value.toLocaleString(undefined, {
+		minimumFractionDigits: 1,
+		maximumFractionDigits: 1,
+	}) + "%";
+}
+
 function mergeColumn(defaults, options){
 	return Object.assign({}, defaults, options || {});
 }
@@ -143,5 +156,31 @@ export function cubisioDynamicAbsoluteColumn(title, field, currentField, previou
 			return sumField(rows, currentField) - sumField(rows, previousField);
 		},
 		bottomCalcFormatter: signedNumberFormatter(),
+	}, options));
+}
+
+export function cubisioRatioPercentColumn(title, field, numeratorField, denominatorField, options){
+	return finalizeBottomCalc(mergeColumn({
+		title,
+		field,
+		hozAlign: "right",
+		vertAlign: "middle",
+		mutator(value, data){
+			const numerator = numberValue(data[numeratorField]);
+			const denominator = numberValue(data[denominatorField]);
+
+			if(numerator === null || denominator === null || denominator === 0){
+				return null;
+			}
+
+			return (numerator / denominator) * 100;
+		},
+		formatter: percentFormatter,
+		bottomCalc: "selectedRatio",
+		bottomCalcParams: {
+			numeratorField,
+			denominatorField,
+		},
+		bottomCalcFormatter: percentFormatter,
 	}, options));
 }
